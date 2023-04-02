@@ -1,10 +1,12 @@
-import './App.css';
+import { Fragment } from "react";
+import "./App.css";
+import MiniDrawer from "./components/MiniDrawer";
 
 function App() {
   return (
-    <div className="App">
-      Test
-    </div>
+    <Fragment>
+      <MiniDrawer />
+    </Fragment>
   );
 }
 
