@@ -1,33 +1,35 @@
-import './App.css';
-import About from './pages/About';
-// import User from './pages/User';
-import Drawer from './pages/Drawer';
-import React, { useState } from "react";
-//import ReactDOM from 'react-dom';
-import Header from './pages/Header';
-import SignIn from './pages/SignIn';
-// import SignUp from './pages/SignUp';
-//import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import "./App.css";
+import MiniDrawer from "./pages/Drawer";
+import React, { Fragment, useState } from "react";
+import SignIn from "./pages/SignIn";
 
 function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const handleLogin = () => {
-    // code to handle successful login
-    setIsDrawerOpen(true);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
+    setIsSignedIn(true);
   };
 
   return (
-    <div>
-    <Header/>
-    <About/>
-      <button onClick={handleLogin}>Log In</button>
-      <Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
-        {/* Drawer content */}
-      </Drawer>
-      <SignIn />
-    </div>
+    /**wraping React.Fragment to avoid unnecessary <div> elements
+     * to render in DOM
+     */
+    <Fragment>
+      {/**No need i-render ang <Drawer /> component kasi ito po ay component ni MUI
+       * Ang <MiniDrawer /> ang dapat i-render kasi po ito ang ginawang custom component
+       * sa Drawer.js
+       * Ang <MiniDrawer /> at <SignIn /> component ay dapat i-render sya conditionally
+       * Ibig sabihin, sa unang render dapat <SignIn /> component lang ang mkikita
+       * Magrerender lang ang <MiniDrawer /> component kung naka sign-in na po ang user */}
+      {isSignedIn ? <MiniDrawer /> : <SignIn onSubmit={handleSubmit} />}
+    </Fragment>
   );
 }
 
-export default App
+export default App;
