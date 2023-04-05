@@ -1,7 +1,13 @@
-import "./App.css";
-import MiniDrawer from "./pages/Drawer";
 import React, { Fragment, useState } from "react";
-import SignIn from "./pages/SignIn";
+import { Routes, Route } from "react-router-dom";
+
+import SignIn from "./components/SignIn";
+import MiniDrawer from "./components/Drawer";
+import "./App.css";
+import Products from "./pages/Products";
+import Dashboard from "./pages/Dashboard";
+import Orders from "./pages/Orders";
+import Customers from "./pages/Customers";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -27,7 +33,31 @@ function App() {
        * Ang <MiniDrawer /> at <SignIn /> component ay dapat i-render sya conditionally
        * Ibig sabihin, sa unang render dapat <SignIn /> component lang ang mkikita
        * Magrerender lang ang <MiniDrawer /> component kung naka sign-in na po ang user */}
-      {isSignedIn ? <MiniDrawer /> : <SignIn onSubmit={handleSubmit} />}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isSignedIn ? (
+              <MiniDrawer content={<Dashboard />} />
+            ) : (
+              <SignIn onSubmit={handleSubmit} />
+            )
+          }
+        />
+        <Route
+          path="/Dashboard"
+          element={<MiniDrawer content={<Dashboard />} />}
+        />
+        <Route
+          path="/Products"
+          element={<MiniDrawer content={<Products />} />}
+        />
+        <Route path="/Orders" element={<MiniDrawer content={<Orders />} />} />
+        <Route
+          path="/Customers"
+          element={<MiniDrawer content={<Customers />} />}
+        />
+      </Routes>
     </Fragment>
   );
 }

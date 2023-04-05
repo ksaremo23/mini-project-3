@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,6 +23,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SettingsIcon from "@mui/icons-material/Settings";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -35,15 +36,6 @@ const openedMixin = (theme) => ({
   overflowX: "hidden",
 });
 
-const icons = [
-  <DashboardIcon />,
-  <CategoryIcon />,
-  <ShoppingCartIcon />,
-  <PeopleAltIcon />,
-];
-
-const icons2 = [<InventoryIcon />, <PriceCheckIcon />, <SettingsIcon />];
-
 const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -55,6 +47,15 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
+
+const icons = [
+  <DashboardIcon />,
+  <CategoryIcon />,
+  <ShoppingCartIcon />,
+  <PeopleAltIcon />,
+];
+
+const icons2 = [<InventoryIcon />, <PriceCheckIcon />, <SettingsIcon />];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -100,7 +101,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer() {
+export default function MiniDrawer(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -130,7 +131,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Sales System
+            Sales Management System
           </Typography>
         </Toolbar>
       </AppBar>
@@ -148,7 +149,40 @@ export default function MiniDrawer() {
         <List>
           {["Dashboard", "Products", "Orders", "Customers"].map(
             (text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+              <Link to={`/${text}`} key={text}>
+                <ListItem disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {icons[index]}
+                    </ListItemIcon>
+
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            )
+          )}
+        </List>
+        <Divider />
+        <List>
+          {["Inventory", "Status", "Settings"].map((text, index) => (
+            <Link to={`/${text}`} key={text}>
+              <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -163,46 +197,18 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     }}
                   >
-                    {icons[index]}
+                    {icons2[index]}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
               </ListItem>
-            )
-          )}
-        </List>
-        <Divider />
-        <List>
-          {["Inventory", "Status", "Settings"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {icons2[index]}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+            </Link>
           ))}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph>Some components here to display</Typography>
-        <Typography paragraph>
-          Some components other here to display e.g. cards
-        </Typography>
+        {props.content}
       </Box>
     </Box>
   );
