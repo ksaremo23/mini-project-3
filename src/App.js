@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
+import SignUp from "./pages/SignUp";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -57,6 +58,7 @@ function App() {
           path="/Customers"
           element={<MiniDrawer content={<Customers />} />}
         />
+        <Route path="/Sign-up" element={<SignUp />} />
       </Routes>
     </Fragment>
   );

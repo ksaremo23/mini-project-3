@@ -13,7 +13,7 @@ pool.getConnection((err, connection) => {
   connection.release();
 });
 
-app.use("/api/v1/test", router);
+app.use("/api/v1/mp-3", router);
 
 app.listen(PORT, HOST, () => {
   console.log(`Server is running at http://${HOST}:${PORT}`);

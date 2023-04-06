@@ -51,4 +51,65 @@ const remove = (req, res) => {
   });
 };
 
-module.exports = { getAll, getById, create, update, remove };
+const getAllProducts = (req, res) => {
+  pool.query(queries.selectAllProducts, (error, results) => {
+    if (error) throw error;
+    res.status(200).json(results);
+  });
+};
+
+const getProductById = (req, res) => {
+  const id = parseInt(req.params.id);
+  pool.query(queries.selectProductById, [id], (error, results) => {
+    if (error) throw error;
+    res.status(200).json(results);
+  });
+};
+
+const addProduct = (req, res) => {
+  const { code, description, unit_price } = req.body;
+  pool.query(
+    queries.insertProduct,
+    [code, description, unit_price],
+    (error, results) => {
+      if (error) throw error;
+      res
+        .status(200)
+        .send(`Successfully added product with id: ${results.insertId}`);
+    }
+  );
+};
+
+const updateProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  const { code, description, unit_price } = req.body;
+  pool.query(
+    queries.updateProduct,
+    [code, description, unit_price, id],
+    (error, results) => {
+      if (error) throw error;
+      res.status(200).send(`Successfully updated products with id: ${id}`);
+    }
+  );
+};
+
+const deleteProduct = (req, res) => {
+  const id = parseInt(req.params.id);
+  pool.query(queries.removeProduct, [id], (error, results) => {
+    if (error) throw error;
+    res.status(200).send(`Successfully deleted product with id: ${id}`);
+  });
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+  addProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+};
