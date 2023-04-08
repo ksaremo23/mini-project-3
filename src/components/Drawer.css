@@ -1,0 +1,9 @@
+#drawer a.active {
+  text-decoration: line-through;
+}
+
+a {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+}

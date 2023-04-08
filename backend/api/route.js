@@ -19,11 +19,11 @@ router.use(
 );
 
 //customer table
-router.get("/", db.getAll);
-router.get("/:id", db.getById);
-router.post("/", db.create);
-router.put("/:id", db.update);
-router.delete("/:id", db.remove);
+router.get("/customers", db.getAll);
+router.get("/customers/:id", db.getById);
+router.post("/customers", db.create);
+router.put("/customers/:id", db.update);
+router.delete("/customers/:id", db.remove);
 
 //products table
 router.get("/products", db.getAllProducts);

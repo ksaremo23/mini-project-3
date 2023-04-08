@@ -23,7 +23,9 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SettingsIcon from "@mui/icons-material/Settings";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+import './Drawer.css'
 
 const drawerWidth = 240;
 
@@ -147,41 +149,43 @@ export default function MiniDrawer(props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Dashboard", "Products", "Orders", "Customers"].map(
+          {["dashboard", "products", "orders", "customers"].map(
             (text, index) => (
-              <Link to={`/${text}`} key={text}>
-                <ListItem disablePadding sx={{ display: "block" }}>
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
+              <nav id="drawer" key={text}>
+                <NavLink to={`/${text}`} >
+                  <ListItem disablePadding sx={{ display: "block" }}>
+                    <ListItemButton
                       sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
                       }}
                     >
-                      {icons[index]}
-                    </ListItemIcon>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {icons[index]}
+                      </ListItemIcon>
 
-                    <ListItemText
-                      primary={text}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
+                      <ListItemText
+                        primary={text}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </NavLink>
+              </nav>
             )
           )}
         </List>
         <Divider />
         <List>
-          {["Inventory", "Status", "Settings"].map((text, index) => (
-            <Link to={`/${text}`} key={text}>
+          {["inventory", "status", "settings"].map((text, index) => (
+            <NavLink to={`/${text}`} key={text}>
               <ListItem disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
@@ -202,7 +206,7 @@ export default function MiniDrawer(props) {
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
               </ListItem>
-            </Link>
+            </NavLink>
           ))}
         </List>
       </Drawer>
