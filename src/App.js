@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 import SignIn from "./components/SignIn";
 import MiniDrawer from "./components/Drawer";
-import "./App.css";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/Orders";
@@ -39,26 +38,47 @@ function App() {
           path="/"
           element={
             isSignedIn ? (
-              <MiniDrawer content={<Dashboard />} />
+              <MiniDrawer>
+                <Dashboard />
+              </MiniDrawer>
             ) : (
               <SignIn onSubmit={handleSubmit} />
             )
           }
         />
         <Route
-          path="/Dashboard"
-          element={<MiniDrawer content={<Dashboard />} />}
+          path="/dashboard"
+          element={
+            <MiniDrawer>
+              <Dashboard />
+            </MiniDrawer>
+          }
         />
         <Route
-          path="/Products"
-          element={<MiniDrawer content={<Products />} />}
+          path="/products"
+          element={
+            <MiniDrawer>
+              <Products />
+            </MiniDrawer>
+          }
         />
-        <Route path="/Orders" element={<MiniDrawer content={<Orders />} />} />
         <Route
-          path="/Customers"
-          element={<MiniDrawer content={<Customers />} />}
+          path="/orders"
+          element={
+            <MiniDrawer>
+              <Orders />
+            </MiniDrawer>
+          }
         />
-        <Route path="/Sign-up" element={<SignUp />} />
+        <Route
+          path="/customers"
+          element={
+            <MiniDrawer>
+              <Customers />
+            </MiniDrawer>
+          }
+        />
+        <Route path="/sign-up" element={<SignUp />} />
       </Routes>
     </Fragment>
   );

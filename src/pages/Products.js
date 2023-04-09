@@ -29,7 +29,6 @@ const Products = () => {
       },
     })
       .then(() => {
-        console.log(product);
         alert("Succesfully submitted");
       })
       .catch((err) => console.log(err.message));

@@ -1,12 +1,23 @@
 import React, { Fragment, useState, useEffect, useCallback } from "react";
+
 import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 import LoadingLinear from "./LoadingLinear";
+import NoRowsOverlay from "./NoRowsOverlay";
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [snackbar, setSnackbar] = useState(null);
+  const [rowModesModel, setRowModesModel] = useState({});
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
@@ -16,9 +27,7 @@ const ViewProducts = () => {
         "http://127.0.0.1:5000/api/v1/mp-3/products"
       );
       if (!response.ok) {
-        throw new Error(
-          "Something went wrong! Double check database connection"
-        );
+        throw new Error("Something went wrong in server.");
       }
       const data = await response.json();
       const productObj = data.map((productData) => {
@@ -40,52 +49,192 @@ const ViewProducts = () => {
     fetchProducts();
   }, [fetchProducts]);
 
+  const updateProduct = useCallback(async (id, product) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await fetch(`http://127.0.0.1:5000/api/v1/mp-3/products/${id}`, {
+        method: "PUT",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      });
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleCloseSnackbar = () => setSnackbar(null);
+
+  const handleRowEditStart = (params, event) => {
+    event.defaultMuiPrevented = true;
+  };
+
+  const handleRowEditStop = (params, event) => {
+    event.defaultMuiPrevented = true;
+  };
+
+  const handleEditClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id) => () => {
+    products.filter((row) => row.id !== id);
+  };
+
+  const handleCancelClick = (id) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+    const editedRow = products.find((row) => row.id === id);
+    if (editedRow.isNew) {
+      products.filter((row) => row.id !== id);
+    }
+  };
+
+  const processRowUpdate = useCallback(
+    async (newRow) => {
+      const updatedRow = { ...newRow, isNew: false };
+      await updateProduct(updatedRow.id, {
+        code: updatedRow.code,
+        description: updatedRow.description,
+        unit_price: updatedRow.price,
+      });
+      setSnackbar({
+        children: "Product successfully saved",
+        severity: "success",
+      });
+      return updatedRow;
+    },
+    [updateProduct]
+  );
+
+  const handleProcessRowUpdateError = useCallback((error) => {
+    setSnackbar({ children: error.message, severity: "error" });
+  }, []);
+
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "code", headerName: "Product Code", width: 300 },
-    { field: "description", headerName: "Description", width: 300 },
+    { field: "id", headerName: "ID", width: 70, editable: true },
+    { field: "code", headerName: "Product Code", width: 240, editable: true },
+    {
+      field: "description",
+      headerName: "Description",
+      width: 280,
+      editable: true,
+    },
     {
       field: "price",
       headerName: "Price",
       type: "number",
       width: 100,
+      editable: true,
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      width: 100,
+      cellClassName: "actions",
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
     },
   ];
 
-  let content = <h2>Found no products</h2>;
+  let content = <NoRowsOverlay />;
 
   if (products.length > 0) {
     content = (
-      <DataGrid
-        rows={products}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
+      <>
+        <DataGrid
+          rows={products}
+          columns={columns}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStart={handleRowEditStart}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
             },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
-      />
+          }}
+          pageSizeOptions={[5]}
+          checkboxSelection
+          disableRowSelectionOnClick
+        />
+        {!!snackbar && (
+          <Snackbar
+            open
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            onClose={handleCloseSnackbar}
+            autoHideDuration={6000}
+          >
+            <Alert {...snackbar} onClose={handleCloseSnackbar} />
+          </Snackbar>
+        )}
+      </>
     );
   }
 
   if (error) {
-    content = <h2>{error}</h2>;
+    content = setSnackbar({ children: error.message, severity: "error" });
   }
 
   if (isLoading) {
     content = <LoadingLinear />;
   }
 
-  return (
-    <Fragment>
-      <Box sx={{ height: 400, width: "100%" }}>{content}</Box>
-    </Fragment>
-  );
+  return <Box sx={{ height: 400, width: "100%" }}>{content}</Box>;
 };
 
 export default ViewProducts;

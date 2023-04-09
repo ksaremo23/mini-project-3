@@ -25,7 +25,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import { NavLink } from "react-router-dom";
 
-import './Drawer.css'
+import "./Drawer.css";
 
 const drawerWidth = 240;
 
@@ -152,7 +152,7 @@ export default function MiniDrawer(props) {
           {["dashboard", "products", "orders", "customers"].map(
             (text, index) => (
               <nav id="drawer" key={text}>
-                <NavLink to={`/${text}`} >
+                <NavLink to={`/${text}`}>
                   <ListItem disablePadding sx={{ display: "block" }}>
                     <ListItemButton
                       sx={{
@@ -212,7 +212,7 @@ export default function MiniDrawer(props) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {props.content}
+        {props.children}
       </Box>
     </Box>
   );
