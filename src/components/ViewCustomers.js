@@ -24,7 +24,7 @@ const ViewCustomers = () => {
     setError(null);
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/api/v1/mp-3/products"
+        "http://127.0.0.1:5000/api/v1/mp-3/customers"
       );
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
@@ -38,7 +38,7 @@ const ViewCustomers = () => {
           price: productData.unit_price,
         };
       });
-      setCustomers(productObj);
+      setCustomers(customers);
     } catch (error) {
       setError(error.message);
     }
@@ -109,7 +109,7 @@ const ViewCustomers = () => {
         unit_price: updatedRow.price,
       });
       setSnackbar({
-        children: "Product successfully saved",
+        children: "Customer successfully saved",
         severity: "success",
       });
       return updatedRow;
@@ -127,7 +127,7 @@ const ViewCustomers = () => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 70, editable: true },
-    { field: "code", headerName: "Product Code", width: 240, editable: true },
+    { field: "code", headerName: "Customer Code", width: 240, editable: true },
     {
       field: "description",
       headerName: "Description",
@@ -135,7 +135,7 @@ const ViewCustomers = () => {
       editable: true,
     },
     {
-      field: "price",
+      field: "",
       headerName: "Price",
       type: "number",
       width: 100,

@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import ViewCustomers from '../components/ViewCustomers';
 
 const columns = [
-  { field: 'customer_id', headerName: 'Customer_ID', width: 90 },
+  { field: 'customer_id', headerName: 'Customer_ID', width: 120 },
   {
     field: 'firstName',
     headerName: 'First name',
