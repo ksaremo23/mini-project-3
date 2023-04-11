@@ -6,11 +6,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 
 import LoadingLinear from "./LoadingLinear";
 import NoRowsOverlay from "./NoRowsOverlay";
+import SnackBar from "./SnackBar";
+
+const api_url = "http://127.0.0.1:5000/api/v1/mp-3/products";
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
@@ -23,9 +24,7 @@ const ViewProducts = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        "http://127.0.0.1:5000/api/v1/mp-3/products"
-      );
+      const response = await fetch(api_url);
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
@@ -40,20 +39,16 @@ const ViewProducts = () => {
       });
       setProducts(productObj);
     } catch (error) {
-      setError(error.message);
+      setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
   const updateProduct = useCallback(async (id, product) => {
     setIsLoading(true);
     setError(null);
     try {
-      await fetch(`http://127.0.0.1:5000/api/v1/mp-3/products/${id}`, {
+      await fetch(`${api_url}/${id}`, {
         method: "PUT",
         mode: "cors",
         headers: {
@@ -62,10 +57,14 @@ const ViewProducts = () => {
         body: JSON.stringify(product),
       });
     } catch (error) {
-      setError(error.message);
+      setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleCloseSnackbar = () => setSnackbar(null);
 
@@ -86,7 +85,19 @@ const ViewProducts = () => {
   };
 
   const handleDeleteClick = (id) => () => {
-    products.filter((row) => row.id !== id);
+    try {
+      fetch(`${api_url}/${id}`, {
+        method: "DELETE",
+        mode: "cors",
+      });
+      setProducts(products.filter((row) => row.id !== id));
+    } catch (error) {
+      setSnackbar({ children: error.message, severity: "error" });
+    }
+    setSnackbar({
+      children: "Product successfully deleted",
+      severity: "success",
+    });
   };
 
   const handleCancelClick = (id) => () => {
@@ -96,7 +107,7 @@ const ViewProducts = () => {
     });
     const editedRow = products.find((row) => row.id === id);
     if (editedRow.isNew) {
-      products.filter((row) => row.id !== id);
+      setProducts(products.filter((row) => row.id !== id));
     }
   };
 
@@ -108,13 +119,16 @@ const ViewProducts = () => {
         description: updatedRow.description,
         unit_price: updatedRow.price,
       });
+      setProducts(
+        products.map((row) => (row.id === newRow.id ? updatedRow : row))
+      );
       setSnackbar({
         children: "Product successfully saved",
         severity: "success",
       });
       return updatedRow;
     },
-    [updateProduct]
+    [updateProduct, products]
   );
 
   const handleProcessRowUpdateError = useCallback((error) => {
@@ -190,7 +204,7 @@ const ViewProducts = () => {
 
   if (products.length > 0) {
     content = (
-      <>
+      <Fragment>
         <DataGrid
           rows={products}
           columns={columns}
@@ -213,16 +227,13 @@ const ViewProducts = () => {
           disableRowSelectionOnClick
         />
         {!!snackbar && (
-          <Snackbar
-            open
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          <SnackBar
             onClose={handleCloseSnackbar}
-            autoHideDuration={6000}
-          >
-            <Alert {...snackbar} onClose={handleCloseSnackbar} />
-          </Snackbar>
+            alertMsg={snackbar}
+            alertOnClose={handleCloseSnackbar}
+          />
         )}
-      </>
+      </Fragment>
     );
   }
 
