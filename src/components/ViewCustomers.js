@@ -38,7 +38,7 @@ const ViewCustomers = () => {
           price: productData.unit_price,
         };
       });
-      setCustomers(customers);
+      setCustomers(productObj);
     } catch (error) {
       setError(error.message);
     }
