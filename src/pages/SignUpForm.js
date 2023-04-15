@@ -120,7 +120,7 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ mt: 5 }} link="http://localhost:3000" />
       </Container>
     </ThemeProvider>
   );
