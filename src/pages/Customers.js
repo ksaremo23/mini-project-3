@@ -1,164 +1,154 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+
+import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
-import ViewCustomers from "../components/ViewCustomers";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import ViewCustomers from "../components/ViewProducts";
 
-const columns = [
-  { field: "customer_id", headerName: "Customer_ID", width: 120 },
-  {
-    field: "firstName",
-    headerName: "First name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "lastName",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "Address",
-    headerName: "Address",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
+import SnackBar from "../components/SnackBar";
 
-  {
-    field: "City",
-    headerName: "City",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "Zip",
-    headerName: "Zip",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "Email",
-    headerName: "Email",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "Phone",
-    headerName: "Phone",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-];
+const api_url = "http://127.0.0.1:5000/api/v1/mp-3/products";
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  {
-    id: 2,
-    lastName: "Lannister",
-    firstName: "Cersei",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 3,
-    lastName: "Lannister",
-    firstName: "Jaime",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 4,
-    lastName: "Stark",
-    firstName: "Arya",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 5,
-    lastName: "Targaryen",
-    firstName: "Daenerys",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 6,
-    lastName: "Melisandre",
-    firstName: "Dennis",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 7,
-    lastName: "Clifford",
-    firstName: "Ferrara",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 8,
-    lastName: "Frances",
-    firstName: "Rossini",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-  {
-    id: 9,
-    lastName: "Roxie",
-    firstName: "Harvey",
-    address: "Manila",
-    city: "Taguig",
-    zip: "4511",
-    email: "sample@email.com",
-    phone: "123456789",
-  },
-];
+const Customers = () => {
+  const [snackbar, setSnackbar] = useState(null);
 
-export default function DataGridDemo() {
+  const handleCloseSnackbar = () => setSnackbar(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const customer = {
+      code: data.get("customers"),
+      description: data.get("description"),
+      unit_price: data.get("price"),
+    };
+    fetch(api_url, {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify(),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(() => {
+        setSnackbar({
+          children: "Customer successfully added",
+          severity: "success",
+        });
+      })
+      .catch((error) =>
+        setSnackbar({ children: error.message, severity: "error" })
+      );
+  };
   return (
     <Fragment>
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-          checkboxSelection
-          disableRowSelectionOnClick
-        />
-      </Box>
-      {/**render ViewCustomer component here */}
+      <Typography component="h1" variant="h5">
+        Customers
+      </Typography>
+      <Container component="main" maxWidth="md">
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3, mb: 3 }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="first name"
+                fullWidth
+                id="first name"
+                label="First Name"
+                autoFocus
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="last name"
+                fullWidth
+                id="last name"
+                label="Last Name"
+                autoFocus
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="address"
+                fullWidth
+                id="address"
+                label="Address"
+                autoFocus
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="zip"
+                fullWidth
+                id="zip"
+                label="Zip"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="city"
+                fullWidth
+                id="city"
+                label="City"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="email"
+                fullWidth
+                id="email"
+                label="Email"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="phone"
+                fullWidth
+                id="phone"
+                label="Phone"
+              />
+            </Grid>
+            <Grid item xs={6} sm={6}>
+              <Button
+                type="submit"
+                startIcon={<AddIcon />}
+                variant="contained"
+                size="large"
+              >
+                Add Customers
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+        {!!snackbar && (
+          <SnackBar
+            onClose={handleCloseSnackbar}
+            alertMsg={snackbar}
+            alertOnClose={handleCloseSnackbar}
+          />
+        )}
+      <ViewCustomers />
+      </Container>
     </Fragment>
   );
-}
+};
+
+export default Customers;

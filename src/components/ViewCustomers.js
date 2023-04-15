@@ -30,15 +30,15 @@ const ViewCustomers = () => {
         throw new Error("Something went wrong in server.");
       }
       const data = await response.json();
-      const productObj = data.map((productData) => {
+      const customerObj = data.map((customerObj) => {
         return {
-          id: productData.product_id,
-          code: productData.code,
-          description: productData.description,
-          price: productData.unit_price,
+          id: customerObj.customer_id,
+          code: customerObj.code,
+          data: customerObj.data,
+          address: customerObj.address,
         };
       });
-      setCustomers(productObj);
+      setCustomers(customerObj);
     } catch (error) {
       setError(error.message);
     }
@@ -49,7 +49,7 @@ const ViewCustomers = () => {
     fetchCustomers();
   }, [fetchCustomers]);
 
-  const updateCustomer = useCallback(async (id, product) => {
+  const updateCustomer = useCallback(async (id, customer) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -59,7 +59,7 @@ const ViewCustomers = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(product),
+        body: JSON.stringify(customer),
       });
     } catch (error) {
       setError(error.message);
@@ -126,22 +126,67 @@ const ViewCustomers = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70, editable: true },
-    { field: "code", headerName: "Customer Code", width: 240, editable: true },
+    {field: "id", headerName: "ID", width: 70, editable: true },
+    {field: "First name", headerName: "First name", width: 240, editable: true },
+    {field: "Last name", headerName: "Last name", width: 240, editable: true},
+    {field: "Address", headerName: "Address", width: 240, editable: true},
+    {field: "Zip", headerName: "zip", width: 240, editable: true},
+    {field: "City", headerName: "city", width: 240, editable: true},
+    {field: "Email", headerName: "email", width: 240, editable: true},
+    {field: "Phone", headerName: "phone", width: 240, editable: true},
     {
-      field: "description",
-      headerName: "Description",
+      field: "address",
+      headerName: "Address",
       width: 280,
       editable: true,
     },
     {
-      field: "",
-      headerName: "Price",
-      type: "number",
+      field: "First name",
+      headerName: "First name",
       width: 100,
       editable: true,
     },
     {
+      field: "last name",
+      headerName: "Last name",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "city",
+      headerName: "City",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "zip",
+      headerName: "Zip",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 100,
+      editable: true,
+    },
+
+    {
+      field: "phone",
+      headerName: "Phone",
+      type: "number",
+      width: 100,
+      editable: true,
+    },
+
+    {
+      
       field: "actions",
       type: "actions",
       headerName: "Actions",
