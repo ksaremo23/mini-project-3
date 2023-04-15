@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
-const Orders = () => {
+const Sales = () => {
   return <Fragment><h1>This is Orders Page</h1></Fragment>;
 };
 
-export default Orders;
+export default Sales;

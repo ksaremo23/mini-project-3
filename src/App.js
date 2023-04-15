@@ -1,13 +1,14 @@
 import React, { Fragment, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import SignIn from "./components/SignIn";
+import SignIn from "./pages/SignIn";
 import MiniDrawer from "./components/Drawer";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
-import Orders from "./pages/Orders";
+import Sales from "./pages/Sales";
 import Customers from "./pages/Customers";
-import SignUp from "./pages/SignUp";
+import SignUpForm from "./pages/SignUpForm";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -15,7 +16,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    localStorage.setItem("user", {
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -34,13 +35,12 @@ function App() {
        * Ibig sabihin, sa unang render dapat <SignIn /> component lang ang mkikita
        * Magrerender lang ang <MiniDrawer /> component kung naka sign-in na po ang user */}
       <Routes>
+        <Route path="/" element={<Navigate to="/sign-in" />} />
         <Route
-          path="/"
+          path="/sign-in"
           element={
             isSignedIn ? (
-              <MiniDrawer>
-                <Dashboard />
-              </MiniDrawer>
+              <Navigate to="/dashboard" />
             ) : (
               <SignIn onSubmit={handleSubmit} />
             )
@@ -66,7 +66,7 @@ function App() {
           path="/orders"
           element={
             <MiniDrawer>
-              <Orders />
+              <Sales />
             </MiniDrawer>
           }
         />
@@ -78,7 +78,8 @@ function App() {
             </MiniDrawer>
           }
         />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-up" element={<SignUpForm />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Fragment>
   );

@@ -30,12 +30,12 @@ const ViewCustomers = () => {
         throw new Error("Something went wrong in server.");
       }
       const data = await response.json();
-      const customerObj = data.map((customerObj) => {
+      const customerObj = data.map((customerData) => {
         return {
-          id: customerObj.customer_id,
-          code: customerObj.code,
-          data: customerObj.data,
-          address: customerObj.address,
+          id: customerData.customer_id,
+          code: customerData.code,
+          data: customerData.data,
+          address: customerData.address,
         };
       });
       setCustomers(customerObj);

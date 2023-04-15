@@ -2,7 +2,8 @@
   text-decoration: line-through;
 }
 
-#drawer a {
+#drawer a,
+#logout a {
   text-transform: uppercase;
   text-decoration: none;
   color: inherit;

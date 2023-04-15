@@ -11,7 +11,7 @@ import ViewCustomers from "../components/ViewProducts";
 
 import SnackBar from "../components/SnackBar";
 
-const api_url = "http://127.0.0.1:5000/api/v1/mp-3/products";
+const api_url = "http://127.0.0.1:5000/api/v1/mp-3/customers";
 
 const Customers = () => {
   const [snackbar, setSnackbar] = useState(null);
@@ -22,14 +22,18 @@ const Customers = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const customer = {
-      code: data.get("customers"),
-      description: data.get("description"),
-      unit_price: data.get("price"),
+      firstname: data.get("firstName"),
+      lastname: data.get("lastName"),
+      address: data.get("address"),
+      city: data.get("city"),
+      zip: data.get("zip"),
+      email: data.get("email"),
+      phone: data.get("phone"),
     };
     fetch(api_url, {
       method: "POST",
       mode: "cors",
-      body: JSON.stringify(),
+      body: JSON.stringify(customer),
       headers: {
         "Content-Type": "application/json",
       },
@@ -60,9 +64,9 @@ const Customers = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="first name"
+                name="firstName"
                 fullWidth
-                id="first name"
+                id="firstName"
                 label="First Name"
                 autoFocus
               />
@@ -71,11 +75,10 @@ const Customers = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="last name"
+                name="lastName"
                 fullWidth
-                id="last name"
+                id="lastName"
                 label="Last Name"
-                autoFocus
               />
             </Grid>
 
@@ -86,19 +89,9 @@ const Customers = () => {
                 fullWidth
                 id="address"
                 label="Address"
-                autoFocus
               />
             </Grid>
-            
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="zip"
-                fullWidth
-                id="zip"
-                label="Zip"
-              />
-            </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
@@ -108,6 +101,17 @@ const Customers = () => {
                 label="City"
               />
             </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="zip"
+                fullWidth
+                id="zip"
+                label="Zip"
+              />
+            </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
@@ -117,6 +121,7 @@ const Customers = () => {
                 label="Email"
               />
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
@@ -126,6 +131,7 @@ const Customers = () => {
                 label="Phone"
               />
             </Grid>
+
             <Grid item xs={6} sm={6}>
               <Button
                 type="submit"
@@ -145,7 +151,7 @@ const Customers = () => {
             alertOnClose={handleCloseSnackbar}
           />
         )}
-      <ViewCustomers />
+        <ViewCustomers />
       </Container>
     </Fragment>
   );

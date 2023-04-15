@@ -1,4 +1,6 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -18,12 +20,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import CategoryIcon from "@mui/icons-material/Category";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import SettingsIcon from "@mui/icons-material/Settings";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import PriceCheckIcon from "@mui/icons-material/PriceCheck";
-import { NavLink } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import "./Drawer.css";
 
@@ -53,11 +52,11 @@ const closedMixin = (theme) => ({
 const icons = [
   <DashboardIcon />,
   <CategoryIcon />,
-  <ShoppingCartIcon />,
+  <MonetizationOnIcon />,
   <PeopleAltIcon />,
 ];
 
-const icons2 = [<InventoryIcon />, <PriceCheckIcon />, <SettingsIcon />];
+const icons2 = [<LogoutIcon />];
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -149,10 +148,10 @@ export default function MiniDrawer(props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["dashboard", "products", "orders", "customers"].map(
-            (text, index) => (
-              <nav id="drawer" key={text}>
-                <NavLink to={`/${text}`}>
+          <nav id="drawer">
+            {["dashboard", "products", "sales", "customers"].map(
+              (text, index) => (
+                <NavLink to={`/${text}`} key={text}>
                   <ListItem disablePadding sx={{ display: "block" }}>
                     <ListItemButton
                       sx={{
@@ -178,36 +177,41 @@ export default function MiniDrawer(props) {
                     </ListItemButton>
                   </ListItem>
                 </NavLink>
-              </nav>
-            )
-          )}
+              )
+            )}
+          </nav>
         </List>
         <Divider />
         <List>
-          {["inventory", "status", "settings"].map((text, index) => (
-            <NavLink to={`/${text}`} key={text}>
-              <ListItem disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+          <nav id="logout">
+            {["logout"].map((text, index) => (
+              <NavLink to="/" key={text}>
+                <ListItem disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    {icons2[index]}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            </NavLink>
-          ))}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {icons2[index]}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </NavLink>
+            ))}
+          </nav>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
