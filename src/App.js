@@ -63,7 +63,7 @@ function App() {
           }
         />
         <Route
-          path="/orders"
+          path="/sales"
           element={
             <MiniDrawer>
               <Sales />
