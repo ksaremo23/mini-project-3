@@ -1,7 +1,11 @@
 import React, { Fragment } from "react";
 
 const Dashboard = () => {
-  return <Fragment>components here</Fragment>;
+  return (
+    <Fragment>
+      <h1>This is Dashboard</h1>
+    </Fragment>
+  );
 };
 
 export default Dashboard;
