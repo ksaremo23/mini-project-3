@@ -7,7 +7,7 @@ import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import Sales from "./pages/Sales";
 import Customers from "./pages/Customers";
-import SignUpForm from "./pages/SignUpForm";
+import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -78,7 +78,7 @@ function App() {
             </MiniDrawer>
           }
         />
-        <Route path="/sign-up" element={<SignUpForm />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Fragment>
