@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
-import ViewCustomers from "../components/ViewProducts";
+import ViewCustomers from "../components/ViewCustomers";
 
 import SnackBar from "../components/SnackBar";
 
@@ -152,7 +152,7 @@ const Customers = () => {
             alertOnClose={handleCloseSnackbar}
           />
         )}
-       <ViewCustomers />
+        <ViewCustomers />
       </Container>
     </Fragment>
   );
