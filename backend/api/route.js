@@ -3,7 +3,8 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const db = require("./controller");
+const dbCustomers = require("./controller/customers");
+const dbProducts = require("./controller/products");
 
 router.use(bodyParser.json());
 router.use(
@@ -18,18 +19,20 @@ router.use(
   })
 );
 
-//customer table
-router.get("/customers", db.getAll);
-router.get("/customers/:id", db.getById);
-router.post("/customers", db.create);
-router.put("/customers/:id", db.update);
-router.delete("/customers/:id", db.remove);
+//customer
+router.get("/customers", dbCustomers.getAll);
+router.get("/customers/:id", dbCustomers.getById);
+router.post("/customers", dbCustomers.create);
+router.put("/customers/:id", dbCustomers.update);
+router.delete("/customers/:id", dbCustomers.remove);
 
-//products table
-router.get("/products", db.getAllProducts);
-router.get("/products/:id", db.getProductById);
-router.post("/products", db.addProduct);
-router.put("/products/:id", db.updateProduct);
-router.delete("/products/:id", db.deleteProduct);
+//products
+router.get("/products", dbProducts.getAll);
+router.get("/products/:id", dbProducts.getById);
+router.post("/products", dbProducts.create);
+router.put("/products/:id", dbProducts.update);
+router.delete("/products/:id", dbProducts.remove);
+
+//sales
 
 module.exports = router;

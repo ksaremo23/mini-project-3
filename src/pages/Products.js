@@ -66,6 +66,7 @@ const Products = () => {
             Add Products
           </Button>
         </Grid>
+        
         <Grid mt={3}>
           <ViewProducts />
         </Grid>
@@ -94,6 +95,7 @@ const Products = () => {
                   autoFocus
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -103,6 +105,7 @@ const Products = () => {
                   label="Description"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -113,6 +116,7 @@ const Products = () => {
                 />
               </Grid>
             </Grid>
+            
             <DialogActions>
               <Button type="submit" onClick={handleCloseModal} autoFocus>
                 Submit

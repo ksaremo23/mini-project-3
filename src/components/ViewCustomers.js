@@ -24,7 +24,7 @@ const ViewCustomers = () => {
     setError(null);
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/api/v1/mp-3/customers"
+        "http://localhost:5000/api/v1/mp-3/customers"
       );
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
@@ -57,7 +57,7 @@ const ViewCustomers = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await fetch(`http://127.0.0.1:5000/api/v1/mp-3/customers/${id}`, {
+      await fetch(`http://localhost:5000/api/v1/mp-3/customers/${id}`, {
         method: "PUT",
         mode: "cors",
         headers: {
