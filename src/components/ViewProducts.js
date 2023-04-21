@@ -11,7 +11,7 @@ import LoadingLinear from "./LoadingLinear";
 import NoRowsOverlay from "./NoRowsOverlay";
 import SnackBar from "./SnackBar";
 
-const api_url = "http://localhost:5000/api/v1/mp-3/products";
+const api_url = "http://74.50.87.84/api/v1/mp-3/products";
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
