@@ -12,7 +12,7 @@ import ViewCustomers from "../components/ViewProducts";
 
 import SnackBar from "../components/SnackBar";
 
-const api_url = "http://127.0.0.1:5000/api/v1/mp-3/customers";
+const api_url = "http://localhost:5000/api/v1/mp-3/customers";
 
 const Customers = () => {
   const [snackbar, setSnackbar] = useState(null);
@@ -152,7 +152,7 @@ const Customers = () => {
             alertOnClose={handleCloseSnackbar}
           />
         )}
-        <ViewCustomers />
+       <ViewCustomers />
       </Container>
     </Fragment>
   );
