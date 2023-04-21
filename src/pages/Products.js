@@ -66,7 +66,7 @@ const Products = () => {
             Add Products
           </Button>
         </Grid>
-        
+
         <Grid mt={3}>
           <ViewProducts />
         </Grid>
@@ -76,7 +76,6 @@ const Products = () => {
           btnLabel="Submit"
           open={openModal}
           onClose={handleCloseModal}
-          onCloseModal={handleCloseModal}
         >
           <Box
             component="form"
@@ -91,7 +90,7 @@ const Products = () => {
                   name="products"
                   fullWidth
                   id="products"
-                  label="Products"
+                  label="Product Code"
                   autoFocus
                 />
               </Grid>
@@ -116,7 +115,6 @@ const Products = () => {
                 />
               </Grid>
             </Grid>
-            
             <DialogActions>
               <Button type="submit" onClick={handleCloseModal} autoFocus>
                 Submit
