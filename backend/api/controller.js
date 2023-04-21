@@ -4,7 +4,7 @@ const queries = require("./queries");
 const getAll = (req, res) => {
   pool.query(queries.selectAll, (error, results) => {
     if (error) throw error;
-    res.status(200).json(results);
+    res.status(200).json(results); 
   });
 };
 

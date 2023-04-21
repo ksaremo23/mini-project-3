@@ -33,14 +33,18 @@ const ViewCustomers = () => {
       const customerObj = data.map((customerData) => {
         return {
           id: customerData.customer_id,
-          code: customerData.code,
-          data: customerData.data,
+          firstname: customerData.firstname,
+          lastname: customerData.lastname,
           address: customerData.address,
+          city: customerData.city,
+          zip: customerData.zip,
+          email: customerData.email,
+          phone: customerData.phone,
         };
       });
       setCustomers(customerObj);
     } catch (error) {
-      setError(error.message);
+      setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
   }, []);
@@ -62,7 +66,7 @@ const ViewCustomers = () => {
         body: JSON.stringify(customer),
       });
     } catch (error) {
-      setError(error.message);
+      setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
   }, []);
@@ -104,17 +108,24 @@ const ViewCustomers = () => {
     async (newRow) => {
       const updatedRow = { ...newRow, isNew: false };
       await updateCustomer(updatedRow.id, {
-        code: updatedRow.code,
-        description: updatedRow.description,
-        unit_price: updatedRow.price,
+        firstname: updatedRow.firstname,
+        lastname: updatedRow.lastname,
+        address: updatedRow.address,
+        city: updatedRow.city,
+        zip: updatedRow.zip,
+        email: updatedRow.email,
+        phone: updatedRow.phone,
       });
+      setCustomers(
+        customers.map((row) => (row.id === newRow.id ? updatedRow : row))
+      );
       setSnackbar({
         children: "Customer successfully saved",
         severity: "success",
       });
       return updatedRow;
     },
-    [updateCustomer]
+    [updateCustomer, customers]
   );
 
   const handleProcessRowUpdateError = useCallback((error) => {
@@ -126,67 +137,15 @@ const ViewCustomers = () => {
   };
 
   const columns = [
-    {field: "id", headerName: "ID", width: 70, editable: true },
-    {field: "First name", headerName: "First name", width: 240, editable: true },
-    {field: "Last name", headerName: "Last name", width: 240, editable: true},
-    {field: "Address", headerName: "Address", width: 240, editable: true},
-    {field: "Zip", headerName: "zip", width: 240, editable: true},
-    {field: "City", headerName: "city", width: 240, editable: true},
-    {field: "Email", headerName: "email", width: 240, editable: true},
-    {field: "Phone", headerName: "phone", width: 240, editable: true},
+    { field: "id", headerName: "ID", width: 70, editable: true },
+    { field: "firstname", headerName: "First name", width: 240, editable: true,},
+    { field: "lastname", headerName: "Last name", width: 240, editable: true },
+    { field: "address", headerName: "Address", width: 240, editable: true },
+    { field: "zip", headerName: "Zip", width: 240, editable: true },
+    { field: "city", headerName: "City", width: 240, editable: true },
+    { field: "email", headerName: "Email", width: 240, editable: true },
+    { field: "phone", headerName: "Phone", width: 240, editable: true },
     {
-      field: "address",
-      headerName: "Address",
-      width: 280,
-      editable: true,
-    },
-    {
-      field: "First name",
-      headerName: "First name",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "last name",
-      headerName: "Last name",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "city",
-      headerName: "City",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "zip",
-      headerName: "Zip",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      width: 100,
-      editable: true,
-    },
-
-    {
-      field: "phone",
-      headerName: "Phone",
-      type: "number",
-      width: 100,
-      editable: true,
-    },
-
-    {
-      
       field: "actions",
       type: "actions",
       headerName: "Actions",
@@ -262,8 +221,7 @@ const ViewCustomers = () => {
             open
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             onClose={handleCloseSnackbar}
-            autoHideDuration={6000}
-          >
+            autoHideDuration={6000}>
             <Alert {...snackbar} onClose={handleCloseSnackbar} />
           </Snackbar>
         )}

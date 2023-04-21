@@ -151,7 +151,7 @@ const Customers = () => {
             alertOnClose={handleCloseSnackbar}
           />
         )}
-        <ViewCustomers />
+       <ViewCustomers />
       </Container>
     </Fragment>
   );
