@@ -12,7 +12,7 @@ import ViewCustomers from "../components/ViewCustomers";
 
 import SnackBar from "../components/SnackBar";
 
-const api_url = "http://74.50.87.84/api/v1/mp-3/customers";
+const api_url = "https://api.jhenbert.com/api/v1/mp-3/customers";
 
 const Customers = () => {
   const [snackbar, setSnackbar] = useState(null);
