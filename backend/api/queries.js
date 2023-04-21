@@ -9,7 +9,7 @@ const removeCustomers = "DELETE FROM customers WHERE customer_id=?";
 
 //products
 const selectAllProducts = "SELECT * FROM products";
-const selectProductById = "SELECT * FROM products WHERE product_id=?";
+const selectProductsById = "SELECT * FROM products WHERE product_id=?";
 const insertProducts =
   "INSERT INTO products (code, description, unit_price) VALUES (?,?,?)";
 const updateProducts =
@@ -30,7 +30,7 @@ module.exports = {
   updateCustomers,
   removeCustomers,
   selectAllProducts,
-  selectProductById,
+  selectProductsById,
   insertProducts,
   updateProducts,
   removeProducts,
