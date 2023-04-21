@@ -6,11 +6,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 
 import LoadingLinear from "./LoadingLinear";
 import NoRowsOverlay from "./NoRowsOverlay";
+import SnackBar from "./SnackBar";
 
 const ViewCustomers = () => {
   const [customers, setCustomers] = useState([]);
@@ -19,13 +18,13 @@ const ViewCustomers = () => {
   const [snackbar, setSnackbar] = useState(null);
   const [rowModesModel, setRowModesModel] = useState({});
 
+  const api_url = "http://localhost:5000/api/v1/mp-3/customers";
+
   const fetchCustomers = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/v1/mp-3/customers"
-      );
+      const response = await fetch(`${api_url}`);
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
@@ -57,7 +56,7 @@ const ViewCustomers = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await fetch(`http://localhost:5000/api/v1/mp-3/customers/${id}`, {
+      await fetch(`${api_url}/${id}`, {
         method: "PUT",
         mode: "cors",
         headers: {
@@ -137,8 +136,13 @@ const ViewCustomers = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70, editable: true },
-    { field: "firstname", headerName: "First name", width: 240, editable: true,},
+    { field: "id", headerName: "ID", width: 70 },
+    {
+      field: "firstname",
+      headerName: "First name",
+      width: 240,
+      editable: true,
+    },
     { field: "lastname", headerName: "Last name", width: 240, editable: true },
     { field: "address", headerName: "Address", width: 240, editable: true },
     { field: "zip", headerName: "Zip", width: 240, editable: true },
@@ -217,13 +221,11 @@ const ViewCustomers = () => {
           disableRowSelectionOnClick
         />
         {!!snackbar && (
-          <Snackbar
-            open
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          <SnackBar
             onClose={handleCloseSnackbar}
-            autoHideDuration={6000}>
-            <Alert {...snackbar} onClose={handleCloseSnackbar} />
-          </Snackbar>
+            alertMsg={snackbar}
+            alertOnClose={handleCloseSnackbar}
+          />
         )}
       </>
     );
