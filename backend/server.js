@@ -14,7 +14,7 @@ pool.getConnection((error, connection) => {
   let createCustomersTable =
     "create table if not exists customers(customer_id INT PRIMARY KEY AUTO_INCREMENT, firstname VARCHAR(50), lastname VARCHAR(50), address VARCHAR(150), city VARCHAR(50), zip VARCHAR(50), email VARCHAR(50), phone VARCHAR(15))";
 
-  // let createProductsTable = "";
+  let createProductsTable = "create table if not exists products(product_id INT PRIMARY KEY AUTO_INCREMENT, code VARCHAR(6), description VARCHAR(255), unit_price VARCHAR(15))";
 
   // let createSalesTable = "";
 
@@ -22,11 +22,11 @@ pool.getConnection((error, connection) => {
     if (error) throw error;
   });
 
-  // pool.query(createSalesTable, (error, results) => {
-  //   if (error) throw error;
-  // });
+  pool.query(createProductsTable, (error, results) => {
+    if (error) throw error;
+  });
 
-  // pool.query(createProductsTable, (error, results) => {
+  // pool.query(createSalesTable, (error, results) => {
   //   if (error) throw error;
   // });
 
