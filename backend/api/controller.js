@@ -113,3 +113,33 @@ module.exports = {
   updateProduct,
   deleteProduct,
 };
+
+const fetchTotalCustomers = () => {
+  const query = 'SELECT COUNT(*) as total_customers FROM customers';
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (error) reject(error);
+      else resolve(results[0].total_customers);
+    });
+  });
+};
+
+const fetchTotalSales = () => {
+  const query = 'SELECT SUM(price) as total_sales FROM products_sold';
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (error) reject(error);
+      else resolve(results[0].total_sales);
+    });
+  });
+};
+
+const fetchTotalProducts = () => {
+  const query = 'SELECT COUNT(*) as total_products FROM products';
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (error) reject(error);
+      else resolve(results[0].total_products);
+    });
+  });
+};
