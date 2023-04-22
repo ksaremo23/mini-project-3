@@ -16,7 +16,7 @@ pool.getConnection((error, connection) => {
 
   let createProductsTable = "create table if not exists products(product_id INT PRIMARY KEY AUTO_INCREMENT, code VARCHAR(6), description VARCHAR(255), unit_price VARCHAR(15))";
 
-  // let createSalesTable = "";
+  let createSalesTable = "create table if not exists sales(sale_id INT PRIMARY KEY AUTO_INCREMENT, customer_name VARCHAR(15), date_of_sale DATETIME)";
 
   pool.query(createCustomersTable, (error, results) => {
     if (error) throw error;
@@ -26,9 +26,9 @@ pool.getConnection((error, connection) => {
     if (error) throw error;
   });
 
-  // pool.query(createSalesTable, (error, results) => {
-  //   if (error) throw error;
-  // });
+  pool.query(createSalesTable, (error, results) => {
+    if (error) throw error;
+  });
 
   console.log("Succesfully connected to MySQL Database");
 

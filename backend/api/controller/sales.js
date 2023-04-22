@@ -2,7 +2,7 @@ const pool = require("../dbConf");
 const queries = require("../queries");
 
 const getAll = (req, res) => {
-  pool.query(queries.selectAllProducts, (error, results) => {
+  pool.query(queries.selectAllSales, (error, results) => {
     if (error) throw error;
     res.status(200).json(results);
   });
@@ -10,44 +10,44 @@ const getAll = (req, res) => {
 
 const getById = (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(queries.selectProductsById, [id], (error, results) => {
+  pool.query(queries.selectSalesById, [id], (error, results) => {
     if (error) throw error;
     res.status(200).json(results);
   });
 };
 
 const create = (req, res) => {
-  const { code, description, unit_price } = req.body;
+  const { customer_name, date_of_sale } = req.body;
   pool.query(
-    queries.insertProducts,
-    [code, description, unit_price],
+    queries.insertSales,
+    [customer_name, date_of_sale],
     (error, results) => {
       if (error) throw error;
       res
         .status(200)
-        .send(`Successfully added product with id: ${results.insertId}`);
+        .send(`Successfully added sales data with id: ${results.insertId}`);
     }
   );
 };
 
 const update = (req, res) => {
   const id = parseInt(req.params.id);
-  const { code, description, unit_price } = req.body;
+  const { customer_name, date_of_sale } = req.body;
   pool.query(
-    queries.updateProducts,
-    [code, description, unit_price, id],
+    queries.updateSales,
+    [customer_name, date_of_sale, id],
     (error, results) => {
       if (error) throw error;
-      res.status(200).send(`Successfully updated products with id: ${id}`);
+      res.status(200).send(`Successfully updated sales data with id: ${id}`);
     }
   );
 };
 
 const remove = (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(queries.removeProducts, [id], (error, results) => {
+  pool.query(queries.removeSales, [id], (error, results) => {
     if (error) throw error;
-    res.status(200).send(`Successfully deleted product with id: ${id}`);
+    res.status(200).send(`Successfully deleted sales data with id: ${id}`);
   });
 };
 

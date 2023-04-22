@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
@@ -89,7 +89,19 @@ const ViewCustomers = () => {
   };
 
   const handleDeleteClick = (id) => () => {
-    customers.filter((row) => row.id !== id);
+    try {
+      fetch(`${api_url}/${id}`, {
+        method: "DELETE",
+        mode: "cors",
+      });
+      setCustomers(customers.filter((row) => row.id !== id));
+    } catch (error) {
+      setSnackbar({ children: error.message, severity: "error" });
+    }
+    setSnackbar({
+      children: "Customer's data successfully deleted",
+      severity: "success",
+    });
   };
 
   const handleCancelClick = (id) => () => {

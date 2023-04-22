@@ -10,11 +10,12 @@ import {
 } from "@mui/material/";
 import AddIcon from "@mui/icons-material/Add";
 
-import ViewProducts from "../components/ViewProducts";
+import ViewSales from "../components/ViewSales";
 import SnackBar from "../components/SnackBar";
 import ModalDialog from "../components/ModalDialog";
 
-const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
+const api_url = "http://localhost:5000/api/v1/mp-3/sales";
+// const api_url = "https://api.jhenbert.com/api/v1/mp-3/sales";
 
 const Sales = () => {
   const [snackbar, setSnackbar] = useState(null);
@@ -29,22 +30,21 @@ const Sales = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const product = {
-      code: data.get("products"),
-      description: data.get("description"),
-      unit_price: data.get("price"),
+    const sales = {
+      customer_name: data.get("customer-name"),
+      date_of_sale: data.get("dos"),
     };
     fetch(api_url, {
       method: "POST",
       mode: "cors",
-      body: JSON.stringify(product),
+      body: JSON.stringify(sales),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then(() => {
         setSnackbar({
-          children: "Product successfully added",
+          children: "Sales data successfully added",
           severity: "success",
         });
       })
@@ -68,11 +68,11 @@ const Sales = () => {
         </Grid>
 
         <Grid mt={3}>
-          <ViewProducts />
+          <ViewSales />
         </Grid>
 
         <ModalDialog
-          title="Products"
+          title="Sales"
           btnLabel="Submit"
           open={openModal}
           onClose={handleCloseModal}
@@ -87,31 +87,20 @@ const Sales = () => {
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="products"
+                  name="customer-name"
                   fullWidth
-                  id="products"
-                  label="Product Code"
-                  autoFocus
+                  id="customer-name"
+                  label="Customer's Name"
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="description"
+                  name="dos"
                   fullWidth
-                  id="description"
-                  label="Description"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="price"
-                  fullWidth
-                  id="price"
-                  label="Price"
+                  id="dos"
+                  label="Date of Sale"
                 />
               </Grid>
             </Grid>
