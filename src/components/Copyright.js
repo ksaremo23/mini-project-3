@@ -13,7 +13,7 @@ const Copyright = (props) => {
     >
       {"Copyright © "}
       <Link color="inherit" href={props.link}>
-        Your Website
+      Sales Management
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

@@ -140,19 +140,19 @@ const ViewProducts = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "code", headerName: "Product Code", width: 240, editable: true },
+    { field: "id", headerName: "ID", flex: 1, minWidth: 50 },
+    { field: "code", headerName: "Product Code", minWidth: 140, editable: true },
     {
       field: "description",
       headerName: "Description",
-      width: 280,
+      minWidth: 280,
       editable: true,
     },
     {
       field: "price",
       headerName: "Price",
       type: "number",
-      width: 100,
+      minWidth: 140,
       editable: true,
     },
     {

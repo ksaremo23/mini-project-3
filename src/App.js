@@ -24,16 +24,7 @@ function App() {
   };
 
   return (
-    /**wraping React.Fragment to avoid unnecessary <div> elements
-     * to render in DOM
-     */
     <Fragment>
-      {/**No need i-render ang <Drawer /> component kasi ito po ay component ni MUI
-       * Ang <MiniDrawer /> ang dapat i-render kasi po ito ang ginawang custom component
-       * sa Drawer.js
-       * Ang <MiniDrawer /> at <SignIn /> component ay dapat i-render sya conditionally
-       * Ibig sabihin, sa unang render dapat <SignIn /> component lang ang mkikita
-       * Magrerender lang ang <MiniDrawer /> component kung naka sign-in na po ang user */}
       <Routes>
         <Route path="/" element={<Navigate to="/sign-in" />} />
         <Route

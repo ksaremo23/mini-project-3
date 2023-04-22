@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 import {
   Container,
@@ -57,124 +57,122 @@ const Customers = () => {
       );
   };
   return (
-    <Fragment>
-      <Container component="main" maxWidth="md">
-        <Grid item xs={6} sm={6}>
-          <Button
-            onClick={handleOpenModal}
-            startIcon={<AddIcon />}
-            variant="contained"
-            size="large"
-          >
-            Add Customers
-          </Button>
-        </Grid>
-
-        <Grid mt={3}>
-          <ViewCustomers />
-        </Grid>
-
-        <ModalDialog
-          title="Customers"
-          btnLabel="Submit"
-          open={openModal}
-          onClose={handleCloseModal}
+    <Container component="main" maxWidth="md">
+      <Grid item xs={6} sm={6}>
+        <Button
+          onClick={handleOpenModal}
+          startIcon={<AddIcon />}
+          variant="contained"
+          size="large"
         >
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3, mb: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
+          Add Customers
+        </Button>
+      </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="lastName"
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                />
-              </Grid>
+      <Grid mt={3}>
+        <ViewCustomers />
+      </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="address"
-                  fullWidth
-                  id="address"
-                  label="Address"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="city"
-                  fullWidth
-                  id="city"
-                  label="City"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="zip"
-                  fullWidth
-                  id="zip"
-                  label="Zip"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="email"
-                  fullWidth
-                  id="email"
-                  label="Email"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="phone"
-                  fullWidth
-                  id="phone"
-                  label="Phone"
-                />
-              </Grid>
+      <ModalDialog
+        title="Customers"
+        btnLabel="Submit"
+        open={openModal}
+        onClose={handleCloseModal}
+      >
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3, mb: 3 }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+              />
             </Grid>
-            <DialogActions>
-              <Button type="submit" onClick={handleCloseModal} autoFocus>
-                Submit
-              </Button>
-              <Button onClick={handleCloseModal}>Cancel</Button>
-            </DialogActions>
-          </Box>
-        </ModalDialog>
-        {!!snackbar && (
-          <SnackBar
-            onClose={handleCloseSnackbar}
-            alertMsg={snackbar}
-            alertOnClose={handleCloseSnackbar}
-          />
-        )}
-      </Container>
-    </Fragment>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="lastName"
+                fullWidth
+                id="lastName"
+                label="Last Name"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="address"
+                fullWidth
+                id="address"
+                label="Address"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="city"
+                fullWidth
+                id="city"
+                label="City"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="zip"
+                fullWidth
+                id="zip"
+                label="Zip"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="email"
+                fullWidth
+                id="email"
+                label="Email"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="phone"
+                fullWidth
+                id="phone"
+                label="Phone"
+              />
+            </Grid>
+          </Grid>
+          <DialogActions>
+            <Button type="submit" onClick={handleCloseModal} autoFocus>
+              Submit
+            </Button>
+            <Button onClick={handleCloseModal}>Cancel</Button>
+          </DialogActions>
+        </Box>
+      </ModalDialog>
+      {!!snackbar && (
+        <SnackBar
+          onClose={handleCloseSnackbar}
+          alertMsg={snackbar}
+          alertOnClose={handleCloseSnackbar}
+        />
+      )}
+    </Container>
   );
 };
 

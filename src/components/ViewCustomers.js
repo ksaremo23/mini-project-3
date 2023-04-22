@@ -136,24 +136,36 @@ const ViewCustomers = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", flex: 1, minWidth: 50 },
     {
       field: "firstname",
       headerName: "First name",
-      width: 120,
+      width: 140,
       editable: true,
     },
-    { field: "lastname", headerName: "Last name", width: 120, editable: true },
-    { field: "address", headerName: "Address", width: 120, editable: true },
-    { field: "zip", headerName: "Zip", width: 120, editable: true },
-    { field: "city", headerName: "City", width: 120, editable: true },
-    { field: "email", headerName: "Email", width: 120, editable: true },
-    { field: "phone", headerName: "Phone", width: 120, editable: true },
+    {
+      field: "lastname",
+      headerName: "Last name",
+      minWidth: 140,
+      editable: true,
+    },
+    { field: "address", headerName: "Address", minWidth: 140, editable: true },
+    {
+      field: "zip",
+      headerName: "Zip",
+      flex: 0.4,
+      minWidth: 90,
+      editable: true,
+    },
+    { field: "city", headerName: "City", minWidth: 140, editable: true },
+    { field: "email", headerName: "Email", minWidth: 140, editable: true },
+    { field: "phone", headerName: "Phone", minWidth: 140, editable: true },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 100,
+      flex: 0.4,
+      minWidth: 100,
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
