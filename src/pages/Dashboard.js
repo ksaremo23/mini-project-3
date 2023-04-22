@@ -1,27 +1,51 @@
-import React, { Fragment } from "react";
-import BasicCard from "../components/BasicCard";
-import { Stack, Container, Box } from "@mui/material";
+import React, { useState, useEffect } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
+function Dashboard() {
+  const [data, setData] = useState({});
 
+  useEffect(() => {
+    fetch('/api/dashboard')
+      .then(response => response.json())
+      .then(data => setData(data));
+  }, []);
 
-const Dashboard = () => {
-    
   return (
-    <Fragment>
-      <Container>
-        <Box mt={4}>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={{ xs: 1, sm: 2, md: 4 }}>
-            <BasicCard title="CUSTOMERS' DATA" data="1000" />
-            <BasicCard title="PRODUCTS ON HAND" data="1000" />
-            <BasicCard title="TOTAL SALES" data="1000" />
-          </Stack>
-        </Box>
-      </Container>
-    </Fragment>
+    <div>
+      <Card>
+        <CardContent>
+          <Typography color="textSecondary" gutterBottom>
+           <h3>Total Customers</h3> 
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {data.total_customers}
+          </Typography>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <Typography color="textSecondary" gutterBottom>
+            <h3>Total Sales</h3>
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {data.total_sales}
+          </Typography>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <Typography color="textSecondary" gutterBottom>
+            <h3>Total Products</h3>
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {data.total_products}
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
   );
-};
-
+}
 
 export default Dashboard;
