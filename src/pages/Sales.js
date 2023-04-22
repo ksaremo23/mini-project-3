@@ -14,8 +14,8 @@ import ViewSales from "../components/ViewSales";
 import SnackBar from "../components/SnackBar";
 import ModalDialog from "../components/ModalDialog";
 
-const api_url = "http://localhost:5000/api/v1/mp-3/sales";
-// const api_url = "https://api.jhenbert.com/api/v1/mp-3/sales";
+// const api_url = "http://localhost:5000/api/v1/mp-3/sales";
+const api_url = "https://api.jhenbert.com/api/v1/mp-3/sales";
 
 const Sales = () => {
   const [snackbar, setSnackbar] = useState(null);
