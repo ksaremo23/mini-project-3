@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const dbCustomers = require("./controller/customers");
 const dbProducts = require("./controller/products");
+const dbSales = require("./controller/sales");
 
 router.use(bodyParser.json());
 router.use(
@@ -34,5 +35,10 @@ router.put("/products/:id", dbProducts.update);
 router.delete("/products/:id", dbProducts.remove);
 
 //sales
+router.get("/sales", dbSales.getAll);
+router.get("/sales/:id", dbSales.getById);
+router.post("/sales", dbSales.create);
+router.put("/sales/:id", dbSales.update);
+router.delete("/sales/:id", dbSales.remove);
 
 module.exports = router;

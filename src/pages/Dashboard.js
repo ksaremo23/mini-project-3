@@ -1,13 +1,26 @@
-import React, { Fragment } from "react";
+import React, { useState, useEffect } from "react";
+import { Container, Stack } from "@mui/material";
 
-const Dashboard = () => {
+import BasicCard from "../components/BasicCard";
+
+function Dashboard() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/dashboard")
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  }, []);
+
   return (
-    <Fragment>
-      <h1>This is Dashboard</h1>
-    </Fragment>
+    <Container>
+      <Stack spacing={3}>
+        <BasicCard title="Total Customers" data={data} />
+        <BasicCard title="Total Sales" data={data} />
+        <BasicCard title="Total Products" data={data} />
+      </Stack>
+    </Container>
   );
-};
-
-// how to create a working log in and sign up form with react ?6
+}
 
 export default Dashboard;

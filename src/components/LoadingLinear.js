@@ -1,11 +1,11 @@
-import * as React from "react";
+import React, {useEffect} from "react";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 
 export default function LoadingLinear() {
   const [progress, setProgress] = React.useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {

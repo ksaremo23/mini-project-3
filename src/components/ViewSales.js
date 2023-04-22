@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
@@ -11,40 +11,44 @@ import LoadingLinear from "./LoadingLinear";
 import NoRowsOverlay from "./NoRowsOverlay";
 import SnackBar from "./SnackBar";
 
-const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
-
-const ViewProducts = () => {
-  const [products, setProducts] = useState([]);
+const ViewSales = () => {
+  const [sales, setSales] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
   const [rowModesModel, setRowModesModel] = useState({});
 
-  const fetchProducts = useCallback(async () => {
+  // const api_url = "http://localhost:5000/api/v1/mp-3/sales";
+    const api_url = "https://api.jhenbert.com/api/v1/mp-3/sales";
+
+  const fetchSales = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(api_url);
+      const response = await fetch(`${api_url}`);
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
       const data = await response.json();
-      const productObj = data.map((productData) => {
+      const salesObj = data.map((saleData) => {
         return {
-          id: productData.product_id,
-          code: productData.code,
-          description: productData.description,
-          price: productData.unit_price,
+          id: saleData.sale_id,
+          customerName: saleData.customer_name,
+          dos: saleData.date_of_sale,
         };
       });
-      setProducts(productObj);
+      setSales(salesObj);
     } catch (error) {
       setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
   }, []);
 
-  const updateProduct = useCallback(async (id, product) => {
+  useEffect(() => {
+    fetchSales();
+  }, [fetchSales]);
+
+  const updateSale = useCallback(async (id, sales) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -54,17 +58,13 @@ const ViewProducts = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(product),
+        body: JSON.stringify(sales),
       });
     } catch (error) {
       setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
   const handleCloseSnackbar = () => setSnackbar(null);
 
@@ -86,18 +86,18 @@ const ViewProducts = () => {
 
   const handleDeleteClick = (id) => () => {
     try {
-      fetch(`${api_url}/${id}`, {
-        method: "DELETE",
-        mode: "cors",
+        fetch(`${api_url}/${id}`, {
+          method: "DELETE",
+          mode: "cors",
+        });
+        setSales(sales.filter((row) => row.id !== id));
+      } catch (error) {
+        setSnackbar({ children: error.message, severity: "error" });
+      }
+      setSnackbar({
+        children: "Sales data successfully deleted",
+        severity: "success",
       });
-      setProducts(products.filter((row) => row.id !== id));
-    } catch (error) {
-      setSnackbar({ children: error.message, severity: "error" });
-    }
-    setSnackbar({
-      children: "Product successfully deleted",
-      severity: "success",
-    });
   };
 
   const handleCancelClick = (id) => () => {
@@ -105,30 +105,27 @@ const ViewProducts = () => {
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-    const editedRow = products.find((row) => row.id === id);
+    const editedRow = sales.find((row) => row.id === id);
     if (editedRow.isNew) {
-      setProducts(products.filter((row) => row.id !== id));
+      sales.filter((row) => row.id !== id);
     }
   };
 
   const processRowUpdate = useCallback(
     async (newRow) => {
       const updatedRow = { ...newRow, isNew: false };
-      await updateProduct(updatedRow.id, {
-        code: updatedRow.code,
-        description: updatedRow.description,
-        unit_price: updatedRow.price,
+      await updateSale(updatedRow.id, {
+        customer_name: updatedRow.customerName,
+        date_of_sale: updatedRow.dos,
       });
-      setProducts(
-        products.map((row) => (row.id === newRow.id ? updatedRow : row))
-      );
+      setSales(sales.map((row) => (row.id === newRow.id ? updatedRow : row)));
       setSnackbar({
-        children: "Product successfully saved",
+        children: "Customer successfully saved",
         severity: "success",
       });
       return updatedRow;
     },
-    [updateProduct, products]
+    [updateSale, sales]
   );
 
   const handleProcessRowUpdateError = useCallback((error) => {
@@ -140,26 +137,26 @@ const ViewProducts = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 1, minWidth: 50 },
-    { field: "code", headerName: "Product Code", minWidth: 140, editable: true },
+    { field: "id", headerName: "ID" },
     {
-      field: "description",
-      headerName: "Description",
-      minWidth: 280,
+      field: "customerName",
+      headerName: "Customer's Name",
+      minWidth: 140,
       editable: true,
     },
     {
-      field: "price",
-      headerName: "Price",
-      type: "number",
-      minWidth: 140,
+      field: "dos",
+      headerName: "Date of Sale",
+      flex: 1,
+      minWidth: 180,
       editable: true,
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 100,
+      flex: 0.4,
+      minWidth: 100,
       cellClassName: "actions",
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -202,11 +199,11 @@ const ViewProducts = () => {
 
   let content = <NoRowsOverlay />;
 
-  if (products.length > 0) {
+  if (sales.length > 0) {
     content = (
-      <Fragment>
+      <>
         <DataGrid
-          rows={products}
+          rows={sales}
           columns={columns}
           editMode="row"
           rowModesModel={rowModesModel}
@@ -233,7 +230,7 @@ const ViewProducts = () => {
             alertOnClose={handleCloseSnackbar}
           />
         )}
-      </Fragment>
+      </>
     );
   }
 
@@ -248,4 +245,4 @@ const ViewProducts = () => {
   return <Box sx={{ height: 400, width: "100%" }}>{content}</Box>;
 };
 
-export default ViewProducts;
+export default ViewSales;
