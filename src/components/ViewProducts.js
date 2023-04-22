@@ -11,7 +11,7 @@ import LoadingLinear from "./LoadingLinear";
 import NoRowsOverlay from "./NoRowsOverlay";
 import SnackBar from "./SnackBar";
 
-const api_url = "http://localhost:5000/api/v1/mp-3/products";
+const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
@@ -140,7 +140,7 @@ const ViewProducts = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70, editable: true },
+    { field: "id", headerName: "ID", width: 70 },
     { field: "code", headerName: "Product Code", width: 240, editable: true },
     {
       field: "description",

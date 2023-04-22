@@ -14,7 +14,7 @@ import ViewProducts from "../components/ViewProducts";
 import SnackBar from "../components/SnackBar";
 import ModalDialog from "../components/ModalDialog";
 
-const api_url = "http://127.0.0.1:5000/api/v1/mp-3/products";
+const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
 
 const Products = () => {
   const [snackbar, setSnackbar] = useState(null);
@@ -66,7 +66,7 @@ const Products = () => {
             Add Products
           </Button>
         </Grid>
-        
+
         <Grid mt={3}>
           <ViewProducts />
         </Grid>
@@ -76,7 +76,6 @@ const Products = () => {
           btnLabel="Submit"
           open={openModal}
           onClose={handleCloseModal}
-          onCloseModal={handleCloseModal}
         >
           <Box
             component="form"
@@ -91,7 +90,7 @@ const Products = () => {
                   name="products"
                   fullWidth
                   id="products"
-                  label="Products"
+                  label="Product Code"
                   autoFocus
                 />
               </Grid>
@@ -116,7 +115,6 @@ const Products = () => {
                 />
               </Grid>
             </Grid>
-            
             <DialogActions>
               <Button type="submit" onClick={handleCloseModal} autoFocus>
                 Submit
