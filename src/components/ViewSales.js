@@ -19,7 +19,7 @@ const ViewSales = () => {
   const [rowModesModel, setRowModesModel] = useState({});
 
   // const api_url = "http://localhost:5000/api/v1/mp-3/sales";
-    const api_url = "https://api.jhenbert.com/api/v1/mp-3/sales";
+    const api_url = "http://74.50.87.84/api/v1/mp-3/sales";
 
   const fetchSales = useCallback(async () => {
     setIsLoading(true);
