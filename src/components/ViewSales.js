@@ -7,9 +7,10 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
-import LoadingLinear from "./LoadingLinear";
-import NoRowsOverlay from "./NoRowsOverlay";
-import SnackBar from "./SnackBar";
+import LoadingLinear from "./UI/LoadingLinear";
+import NoRowsOverlay from "./UI/NoRowsOverlay";
+import SnackBar from "./UI/SnackBar";
+import { BASE_API_URL } from "../variable";
 
 const ViewSales = () => {
   const [sales, setSales] = useState([]);
@@ -18,7 +19,7 @@ const ViewSales = () => {
   const [snackbar, setSnackbar] = useState(null);
   const [rowModesModel, setRowModesModel] = useState({});
 
-  const api_url = "https://api.jhenbert.com/api/v1/mp-3/sales";
+  const api_url = `${BASE_API_URL}/sales`;
 
   const fetchSales = useCallback(async () => {
     setIsLoading(true);
@@ -41,29 +42,32 @@ const ViewSales = () => {
       setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
-  }, []);
+  }, [api_url]);
 
   useEffect(() => {
     fetchSales();
   }, [fetchSales]);
 
-  const updateSale = useCallback(async (id, sales) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      await fetch(`${api_url}/${id}`, {
-        method: "PUT",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sales),
-      });
-    } catch (error) {
-      setSnackbar({ children: error.message, severity: "error" });
-    }
-    setIsLoading(false);
-  }, []);
+  const updateSale = useCallback(
+    async (id, sales) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        await fetch(`${api_url}/${id}`, {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sales),
+        });
+      } catch (error) {
+        setSnackbar({ children: error.message, severity: "error" });
+      }
+      setIsLoading(false);
+    },
+    [api_url]
+  );
 
   const handleCloseSnackbar = () => setSnackbar(null);
 

@@ -16,7 +16,7 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import Copyright from "../components/Copyright";
+import Copyright from "../components/UI/Copyright";
 
 const theme = createTheme();
 

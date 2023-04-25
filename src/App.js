@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import SignIn from "./pages/SignIn";
-import MiniDrawer from "./components/Drawer";
+import MiniDrawer from "./components/layout/MiniDrawer";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import Sales from "./pages/Sales";

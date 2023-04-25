@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Stack } from "@mui/material";
 
-import BasicCard from "../components/BasicCard";
+import BasicCard from "../components/UI/BasicCard";
 
 function Dashboard() {
   const [data, setData] = useState([]);

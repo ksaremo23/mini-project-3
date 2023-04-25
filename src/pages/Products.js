@@ -11,10 +11,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 import ViewProducts from "../components/ViewProducts";
-import SnackBar from "../components/SnackBar";
-import ModalDialog from "../components/ModalDialog";
+import SnackBar from "../components/UI/SnackBar";
+import ModalDialog from "../components/UI/ModalDialog";
+import { BASE_API_URL } from "../variable";
 
-const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
+const api_url = `${BASE_API_URL}/products`;
 
 const Products = () => {
   const [snackbar, setSnackbar] = useState(null);

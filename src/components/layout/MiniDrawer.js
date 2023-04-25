@@ -26,7 +26,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import "./Drawer.css";
+import "./MiniDrawer.css";
 
 const drawerWidth = 240;
 
