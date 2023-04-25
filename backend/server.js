@@ -36,7 +36,7 @@ pool.getConnection((error, connection) => {
 });
 
 //custom route
-app.use("/v1/mp-3", router);
+app.use("/api/v1/mp-3", router);
 
 app.listen(process.env.PORT, () => {
   console.log(
