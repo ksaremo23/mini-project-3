@@ -11,12 +11,7 @@ import LoadingLinear from "./LoadingLinear";
 import NoRowsOverlay from "./NoRowsOverlay";
 import SnackBar from "./SnackBar";
 
-<<<<<<< Updated upstream
 const api_url = "http://74.50.87.84/api/v1/mp-3/products";
-=======
-// const api_url = "http://127.0.0.1:5000/api/v1/mp-3/products";
-const api_url = "https://jhenbert.com/api/v1/mp-3/products";
->>>>>>> Stashed changes
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
