@@ -40,6 +40,6 @@ app.use("/v1/mp-3", router);
 
 app.listen(process.env.PORT, () => {
   console.log(
-    `Server listening in port: ${process.env.PORT}`
+    `Server is listening in port: ${process.env.PORT}`
   );
 });
