@@ -14,7 +14,12 @@ import ViewProducts from "../components/ViewProducts";
 import SnackBar from "../components/SnackBar";
 import ModalDialog from "../components/ModalDialog";
 
+<<<<<<< Updated upstream
 const api_url = "http://74.50.87.84/api/v1/mp-3/products";
+=======
+// const api_url = "http://127.0.0.1:5000/api/v1/mp-3/products";
+const api_url = "https://jhenbert.com/api/v1/mp-3/products";
+>>>>>>> Stashed changes
 
 const Products = () => {
   const [snackbar, setSnackbar] = useState(null);

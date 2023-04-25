@@ -36,10 +36,10 @@ pool.getConnection((error, connection) => {
 });
 
 //custom route
-app.use("/api/v1/mp-3", router);
+app.use("/v1/mp-3", router);
 
-app.listen(process.env.DEV_PORT, process.env.HOST, () => {
+app.listen(process.env.PORT, () => {
   console.log(
-    `Server is running at http://${process.env.HOST}:${process.env.DEV_PORT}`
+    `Server is listening in port: ${process.env.PORT}`
   );
 });
