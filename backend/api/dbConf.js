@@ -1,4 +1,4 @@
-const Pool = require("mysql2").createPool;
+const Pool = require("mysql2/promise").createPool;
 const dotenv = require("dotenv");
 dotenv.config();
 

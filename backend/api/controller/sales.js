@@ -1,54 +1,83 @@
 const pool = require("../dbConf");
 const queries = require("../queries");
 
-const getAll = (req, res) => {
-  pool.query(queries.selectAllSales, (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results);
-  });
+const getAll = async (req, res) => {
+  try {
+    const [rows, fields] = await pool.query(queries.selectAllSales);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("Unable to retrieve sales data. Please try again later.");
+  }
 };
 
-const getById = (req, res) => {
+const getById = async (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(queries.selectSalesById, [id], (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results);
-  });
+  try {
+    const [rows, fields] = await pool.query(queries.selectSalesById, [id]);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("Unable to retrieve sale datum. Please try again later.");
+  }
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
   const { customer_name, date_of_sale } = req.body;
-  pool.query(
-    queries.insertSales,
-    [customer_name, date_of_sale],
-    (error, results) => {
-      if (error) throw error;
-      res
-        .status(200)
-        .send(`Successfully added sales data with id: ${results.insertId}`);
-    }
-  );
+  try {
+    const [rows, fields] = await pool.execute(queries.insertSales, [
+      customer_name,
+      date_of_sale,
+    ]);
+    res
+      .status(200)
+      .send(
+        `${rows.affectedRows} sale datum successfully added with id: ${rows.insertId}`
+      );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Unable to add sales. Please try again later.");
+  }
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
   const id = parseInt(req.params.id);
   const { customer_name, date_of_sale } = req.body;
-  pool.query(
-    queries.updateSales,
-    [customer_name, date_of_sale, id],
-    (error, results) => {
-      if (error) throw error;
-      res.status(200).send(`Successfully updated sales data with id: ${id}`);
-    }
-  );
+
+  try {
+    const [rows, fields] = await pool.execute(queries.updateSales, [
+      customer_name,
+      date_of_sale,
+      id,
+    ]);
+    res
+      .status(200)
+      .send(
+        `${rows.affectedRows} sale datum successfully updated with id: ${id}`
+      );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Unable to update sales. Please try again later.");
+  }
 };
 
-const remove = (req, res) => {
+const remove = async (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(queries.removeSales, [id], (error, results) => {
-    if (error) throw error;
-    res.status(200).send(`Successfully deleted sales data with id: ${id}`);
-  });
+  try {
+    const [rows, fields] = await pool.execute(queries.removeSales, [id]);
+    res
+      .status(200)
+      .send(
+        `${rows.affectedRows} sale datum Successfully deleted with id: ${id}`
+      );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Unable to delete sales. Please try again later.");
+  }
 };
 
 module.exports = {
