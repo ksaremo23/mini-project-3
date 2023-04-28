@@ -9,18 +9,42 @@ import Sales from "./pages/Sales";
 import Customers from "./pages/Customers";
 import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
+import SnackBar from "./components/UI/SnackBar";
+import { BASE_API_URL } from "./variable";
+
+const api_url = `${BASE_API_URL}/users/login`;
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [snackbar, setSnackbar] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleCloseSnackbar = () => setSnackbar(null);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    localStorage.setItem("user", {
-      email: data.get("email"),
+    const user = {
+      username: data.get("username"),
       password: data.get("password"),
-    });
-    setIsSignedIn(true);
+    };
+
+    try {
+      await fetch(api_url, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(user),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setIsSignedIn(true);
+    } catch (error) {
+      setSnackbar({
+        children: error.message,
+        severity: "error",
+      });
+    }
   };
 
   return (
@@ -33,7 +57,18 @@ function App() {
             isSignedIn ? (
               <Navigate to="/dashboard" />
             ) : (
-              <SignIn onSubmit={handleSubmit} />
+              <SignIn
+                onSubmit={handleSubmit}
+                alert={
+                  !!snackbar && (
+                    <SnackBar
+                      onClose={handleCloseSnackbar}
+                      alertMsg={snackbar}
+                      alertOnClose={handleCloseSnackbar}
+                    />
+                  )
+                }
+              />
             )
           }
         />

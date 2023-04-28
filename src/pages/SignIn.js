@@ -49,10 +49,10 @@ const SignIn = (props) => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -63,7 +63,7 @@ const SignIn = (props) => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -91,7 +91,8 @@ const SignIn = (props) => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} link="http://localhost:3000" />
+        <Copyright sx={{ mt: 5, mb: 4 }} link="http://localhost:3000" />
+        {props.alert}
       </Container>
     </ThemeProvider>
   );
