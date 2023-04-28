@@ -10,7 +10,7 @@ const pool = require("./api/dbConf");
 pool.getConnection((error, connection) => {
   if (error) throw error;
 
-  /**dynamicall create tables if table not exists in DB  */
+  /**dynamically create tables if table not exists in DB  */
   let createCustomersTable =
     "CREATE TABLE IF NOT EXISTS customers(customer_id INT PRIMARY KEY AUTO_INCREMENT, firstname VARCHAR(50), lastname VARCHAR(50), address VARCHAR(150), city VARCHAR(50), zip VARCHAR(50), email VARCHAR(50), phone VARCHAR(15))";
 

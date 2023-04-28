@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const session = require("express-session");
 
 const dbCustomers = require("./controller/customers");
 const dbProducts = require("./controller/products");
@@ -18,6 +19,15 @@ router.use(
 router.use(
   cors({
     origin: "*",
+  })
+);
+
+router.use(
+  session({
+    secret: "secret-K",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
   })
 );
 

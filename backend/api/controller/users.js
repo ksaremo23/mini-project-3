@@ -48,9 +48,10 @@ const login = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (passwordMatch) {
+      req.session.user = { username };
       res.send("Login successfully");
     } else {
-      res.status(400).send("Invalid password");
+      res.status(401).send("Invalid password");
     }
   } catch (error) {
     console.error(error);

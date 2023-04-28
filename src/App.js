@@ -38,7 +38,6 @@ function App() {
           "Content-Type": "application/json",
         },
       });
-      setIsSignedIn(true);
     } catch (error) {
       setSnackbar({
         children: error.message,
