@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const session = require("express-session");
+const jwt = require("jsonwebtoken");
 
 const dbCustomers = require("./controller/customers");
 const dbProducts = require("./controller/products");
@@ -22,14 +22,23 @@ router.use(
   })
 );
 
-router.use(
-  session({
-    secret: "secret-K",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-);
+//auth middleware here
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) {
+    res.status(401).send("Need a token");
+  } else {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        res.json({ auth: false, msg: "Failed to authenticate" });
+      } else {
+        req.name = decoded.name;
+        next();
+      }
+    });
+  }
+};
 
 //customer
 router.get("/customers", dbCustomers.getAll);

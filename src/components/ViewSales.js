@@ -87,9 +87,9 @@ const ViewSales = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
+  const handleDeleteClick = (id) => async () => {
     try {
-      fetch(`${api_url}/${id}`, {
+      await fetch(`${api_url}/${id}`, {
         method: "DELETE",
         mode: "cors",
       });

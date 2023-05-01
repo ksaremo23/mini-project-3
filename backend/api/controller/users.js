@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const pool = require("../dbConf");
 const queries = require("../queries");
+const jwt = require("jsonwebtoken");
 
 const getAll = async (req, res) => {
   try {
@@ -41,17 +42,20 @@ const login = async (req, res) => {
     const [rows, fields] = await pool.query(queries.selectAllUsers);
     const user = rows.find((user) => user.username === username);
 
-    if (user == null) {
+    if (!user) {
       return res.status(400).send("Username not found");
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (passwordMatch) {
-      req.session.user = { username };
-      res.send("Login successfully");
+      const accessToken = jwt.sign(
+        user.username,
+        process.env.ACCESS_TOKEN_SECRET
+      );
+      res.json({ auth: true, accessToken });
     } else {
-      res.status(401).send("Invalid password");
+      res.json({ auth: false, msg: "Invalid password" });
     }
   } catch (error) {
     console.error(error);
