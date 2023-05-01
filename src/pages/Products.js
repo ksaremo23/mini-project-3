@@ -11,10 +11,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 import ViewProducts from "../components/ViewProducts";
-import SnackBar from "../components/SnackBar";
-import ModalDialog from "../components/ModalDialog";
+import SnackBar from "../components/UI/SnackBar";
+import ModalDialog from "../components/UI/ModalDialog";
+import { BASE_API_URL } from "../variable";
 
-const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
+const api_url = `${BASE_API_URL}/products`;
 
 const Products = () => {
   const [snackbar, setSnackbar] = useState(null);
@@ -26,7 +27,7 @@ const Products = () => {
 
   const handleCloseModal = () => setOpenModal(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const product = {
@@ -34,23 +35,23 @@ const Products = () => {
       description: data.get("description"),
       unit_price: data.get("price"),
     };
-    fetch(api_url, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(product),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(() => {
-        setSnackbar({
-          children: "Product successfully added",
-          severity: "success",
-        });
-      })
-      .catch((error) =>
-        setSnackbar({ children: error.message, severity: "error" })
-      );
+    try {
+      await fetch(api_url, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(product),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setSnackbar({
+        children: "Product successfully added",
+        severity: "success",
+      });
+    } catch (error) {
+      setSnackbar({ children: error.message, severity: "error" });
+    }
   };
 
   return (

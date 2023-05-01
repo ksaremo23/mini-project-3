@@ -26,7 +26,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import "./Drawer.css";
+import "./MiniDrawer.css";
 
 const drawerWidth = 240;
 
@@ -187,7 +187,7 @@ const MiniDrawer = (props) => {
         <List>
           <nav id="logout">
             {["logout"].map((text, index) => (
-              <NavLink to="/" key={text}>
+              <NavLink to="/sign-in" key={text}>
                 <ListItem disablePadding sx={{ display: "block" }}>
                   <ListItemButton
                     sx={{

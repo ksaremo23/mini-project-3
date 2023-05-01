@@ -7,11 +7,12 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
-import LoadingLinear from "./LoadingLinear";
-import NoRowsOverlay from "./NoRowsOverlay";
-import SnackBar from "./SnackBar";
+import LoadingLinear from "./UI/LoadingLinear";
+import NoRowsOverlay from "./UI/NoRowsOverlay";
+import SnackBar from "./UI/SnackBar";
+import { BASE_API_URL } from "../variable";
 
-const api_url = "https://api.jhenbert.com/api/v1/mp-3/products";
+const api_url = `${BASE_API_URL}/products`;
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
@@ -24,7 +25,9 @@ const ViewProducts = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(api_url);
+      const response = await fetch(api_url, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
@@ -53,6 +56,7 @@ const ViewProducts = () => {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(product),
       });
@@ -84,11 +88,12 @@ const ViewProducts = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
+  const handleDeleteClick = (id) => async () => {
     try {
-      fetch(`${api_url}/${id}`, {
+      await fetch(`${api_url}/${id}`, {
         method: "DELETE",
         mode: "cors",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProducts(products.filter((row) => row.id !== id));
     } catch (error) {
@@ -141,7 +146,12 @@ const ViewProducts = () => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 1, minWidth: 50 },
-    { field: "code", headerName: "Product Code", minWidth: 140, editable: true },
+    {
+      field: "code",
+      headerName: "Product Code",
+      minWidth: 140,
+      editable: true,
+    },
     {
       field: "description",
       headerName: "Description",

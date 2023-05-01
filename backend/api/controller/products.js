@@ -1,54 +1,81 @@
 const pool = require("../dbConf");
 const queries = require("../queries");
 
-const getAll = (req, res) => {
-  pool.query(queries.selectAllProducts, (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results);
-  });
+const getAll = async (req, res) => {
+  try {
+    const [rows, fields] = await pool.query(queries.selectAllProducts);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("Unable to retrieve products. Please try again later.");
+  }
 };
 
-const getById = (req, res) => {
+const getById = async (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(queries.selectProductsById, [id], (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results);
-  });
+  try {
+    const [rows, fields] = await pool.query(queries.selectProductsById, [id]);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send(
+        `Unable to retrieve product with ID ${id}. Please try again later.`
+      );
+  }
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
   const { code, description, unit_price } = req.body;
-  pool.query(
-    queries.insertProducts,
-    [code, description, unit_price],
-    (error, results) => {
-      if (error) throw error;
-      res
-        .status(200)
-        .send(`Successfully added product with id: ${results.insertId}`);
-    }
-  );
+  try {
+    const [rows, fields] = await pool.execute(queries.insertProducts, [
+      code,
+      description,
+      unit_price,
+    ]);
+    res
+      .status(200)
+      .send(
+        `${rows.affectedRows} product successfully added with id: ${rows.insertId}`
+      );
+  } catch (error) {
+    res
+      .status(500)
+      .send("Unable to add product with ID. Please try again later.");
+  }
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
   const id = parseInt(req.params.id);
-  const { code, description, unit_price } = req.body;
-  pool.query(
-    queries.updateProducts,
-    [code, description, unit_price, id],
-    (error, results) => {
-      if (error) throw error;
-      res.status(200).send(`Successfully updated products with id: ${id}`);
-    }
-  );
+  try {
+    const { code, description, unit_price } = req.body;
+    const [rows, fields] = await pool.execute(queries.updateProducts, [
+      code,
+      description,
+      unit_price,
+      id,
+    ]);
+    res
+      .status(200)
+      .send(`${rows.affectedRows} product successfully updated with id: ${id}`);
+  } catch (error) {
+    res
+      .status(500)
+      .send(`Unable to update product with ID ${id}. Please try again later.`);
+  }
 };
 
-const remove = (req, res) => {
+const remove = async (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(queries.removeProducts, [id], (error, results) => {
-    if (error) throw error;
-    res.status(200).send(`Successfully deleted product with id: ${id}`);
-  });
+  try {
+    const [rows, fields] = await pool.execute(queries.removeProducts, [id]);
+    res
+      .status(200)
+      .send(`${rows.affectedRows} product successfully deleted with id: ${id}`);
+  } catch (error) {}
 };
 
 module.exports = {

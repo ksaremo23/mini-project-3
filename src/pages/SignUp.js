@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
@@ -16,18 +14,49 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import Copyright from "../components/Copyright";
+import Copyright from "../components/UI/Copyright";
+import { BASE_API_URL } from "../variable";
+import SnackBar from "../components/UI/SnackBar";
 
+const api_url = `${BASE_API_URL}/users/register`;
 const theme = createTheme();
 
 const SignUp = () => {
-  const handleSubmit = (event) => {
+  const [snackbar, setSnackbar] = useState(null);
+
+  const handleCloseSnackbar = () => setSnackbar(null);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
+    const user = {
+      username: data.get("username"),
+      firstname: data.get("firstname"),
+      lastname: data.get("lastname"),
+      email_add: data.get("email"),
       password: data.get("password"),
-    });
+    };
+
+    try {
+      await fetch(api_url, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(user),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setSnackbar({
+        children: "User successfuly registered",
+        severity: "success",
+      });
+    } catch (error) {
+      setSnackbar({
+        children: error.message,
+        severity: "error",
+      });
+    }
   };
 
   return (
@@ -55,27 +84,40 @@ const SignUp = () => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete="username"
+                  name="username"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="username"
+                  label="Username"
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="firstname"
+                  name="firstname"
+                  required
+                  fullWidth
+                  id="firstname"
+                  label="First Name"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
+                  id="lastname"
                   label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  name="lastname"
+                  autoComplete="lastname"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -86,6 +128,7 @@ const SignUp = () => {
                   autoComplete="email"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -94,15 +137,7 @@ const SignUp = () => {
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  autoComplete="password"
                 />
               </Grid>
             </Grid>
@@ -123,7 +158,14 @@ const SignUp = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} link="http://localhost:3000" />
+        <Copyright sx={{ mt: 3 }} link="http://localhost:3000" />
+        {!!snackbar && (
+          <SnackBar
+            onClose={handleCloseSnackbar}
+            alertMsg={snackbar}
+            alertOnClose={handleCloseSnackbar}
+          />
+        )}
       </Container>
     </ThemeProvider>
   );

@@ -19,9 +19,16 @@ const removeProducts = "DELETE FROM products WHERE product_id=?";
 //sales
 const selectAllSales = "SELECT * FROM sales";
 const selectSalesById = "SELECT * FROM sales WHERE sale_id=? ";
-const insertSales = "INSERT INTO sales (customer_name, date_of_sale) VALUES(?,?)";
-const updateSales = "UPDATE sales SET customer_name=?, date_of_sale=? WHERE sale_id=?";
+const insertSales =
+  "INSERT INTO sales (customer_name, date_of_sale) VALUES(?,?)";
+const updateSales =
+  "UPDATE sales SET customer_name=?, date_of_sale=? WHERE sale_id=?";
 const removeSales = "DELETE FROM sales WHERE sale_id=?";
+
+//users
+const selectAllUsers = "SELECT * FROM users";
+const insertUsers =
+  "INSERT INTO users (username, firstname, lastname, email_add, password) VALUES(?,?,?,?,?)";
 
 module.exports = {
   selectAllCustomers,
@@ -39,4 +46,6 @@ module.exports = {
   insertSales,
   updateSales,
   removeSales,
+  selectAllUsers,
+  insertUsers,
 };

@@ -11,10 +11,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 import ViewCustomers from "../components/ViewCustomers";
-import SnackBar from "../components/SnackBar";
-import ModalDialog from "../components/ModalDialog";
+import SnackBar from "../components/UI/SnackBar";
+import ModalDialog from "../components/UI/ModalDialog";
+import { BASE_API_URL } from "../variable";
 
-const api_url = "https://api.jhenbert.com/api/v1/mp-3/customers";
+const api_url = `${BASE_API_URL}/customers`;
 
 const Customers = () => {
   const [snackbar, setSnackbar] = useState(null);
@@ -44,6 +45,7 @@ const Customers = () => {
       body: JSON.stringify(customer),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then(() => {

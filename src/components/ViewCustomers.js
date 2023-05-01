@@ -7,9 +7,10 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
-import LoadingLinear from "./LoadingLinear";
-import NoRowsOverlay from "./NoRowsOverlay";
-import SnackBar from "./SnackBar";
+import LoadingLinear from "./UI/LoadingLinear";
+import NoRowsOverlay from "./UI/NoRowsOverlay";
+import SnackBar from "./UI/SnackBar";
+import { BASE_API_URL } from "../variable";
 
 const ViewCustomers = () => {
   const [customers, setCustomers] = useState([]);
@@ -18,13 +19,15 @@ const ViewCustomers = () => {
   const [snackbar, setSnackbar] = useState(null);
   const [rowModesModel, setRowModesModel] = useState({});
 
-  const api_url = "https://api.jhenbert.com/api/v1/mp-3/customers";
+  const api_url = `${BASE_API_URL}/customers`;
 
   const fetchCustomers = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${api_url}`);
+      const response = await fetch(`${api_url}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
@@ -46,29 +49,33 @@ const ViewCustomers = () => {
       setSnackbar({ children: error.message, severity: "error" });
     }
     setIsLoading(false);
-  }, []);
+  }, [api_url]);
 
   useEffect(() => {
     fetchCustomers();
   }, [fetchCustomers]);
 
-  const updateCustomer = useCallback(async (id, customer) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      await fetch(`${api_url}/${id}`, {
-        method: "PUT",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(customer),
-      });
-    } catch (error) {
-      setSnackbar({ children: error.message, severity: "error" });
-    }
-    setIsLoading(false);
-  }, []);
+  const updateCustomer = useCallback(
+    async (id, customer) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        await fetch(`${api_url}/${id}`, {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(customer),
+        });
+      } catch (error) {
+        setSnackbar({ children: error.message, severity: "error" });
+      }
+      setIsLoading(false);
+    },
+    [api_url]
+  );
 
   const handleCloseSnackbar = () => setSnackbar(null);
 
@@ -88,11 +95,12 @@ const ViewCustomers = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
+  const handleDeleteClick = (id) => async () => {
     try {
-      fetch(`${api_url}/${id}`, {
+      await fetch(`${api_url}/${id}`, {
         method: "DELETE",
         mode: "cors",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setCustomers(customers.filter((row) => row.id !== id));
     } catch (error) {
