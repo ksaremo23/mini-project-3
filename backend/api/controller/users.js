@@ -43,7 +43,7 @@ const login = async (req, res) => {
     const user = rows.find((user) => user.username === username);
 
     if (!user) {
-      return res.status(400).send("Username not found");
+      return res.json({ auth: false, msg: "Username not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -53,7 +53,7 @@ const login = async (req, res) => {
         user.username,
         process.env.ACCESS_TOKEN_SECRET
       );
-      res.json({ auth: true, accessToken });
+      res.json({ auth: true, msg: accessToken });
     } else {
       res.json({ auth: false, msg: "Invalid password" });
     }
@@ -63,4 +63,8 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { getAll, create, login };
+const isAuth = (req, res) => {
+  res.send("You are authenticated, Congrats!");
+};
+
+module.exports = { getAll, create, login, isAuth };

@@ -45,6 +45,7 @@ const Customers = () => {
       body: JSON.stringify(customer),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then(() => {

@@ -42,6 +42,7 @@ const Products = () => {
         body: JSON.stringify(product),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       setSnackbar({

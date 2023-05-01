@@ -25,7 +25,9 @@ const ViewProducts = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(api_url);
+      const response = await fetch(api_url, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
@@ -54,6 +56,7 @@ const ViewProducts = () => {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(product),
       });
@@ -90,6 +93,7 @@ const ViewProducts = () => {
       await fetch(`${api_url}/${id}`, {
         method: "DELETE",
         mode: "cors",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProducts(products.filter((row) => row.id !== id));
     } catch (error) {

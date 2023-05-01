@@ -30,7 +30,7 @@ function App() {
     };
 
     try {
-      await fetch(api_url, {
+      const response = await fetch(api_url, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(user),
@@ -38,6 +38,15 @@ function App() {
           "Content-Type": "application/json",
         },
       });
+      const { auth, msg } = await response.json();
+
+      if (auth) {
+        setIsSignedIn(true);
+        localStorage.setItem("token", msg);
+      } else {
+        setIsSignedIn(false);
+        setSnackbar({ children: msg, severity: "error" });
+      }
     } catch (error) {
       setSnackbar({
         children: error.message,

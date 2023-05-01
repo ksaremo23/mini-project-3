@@ -187,7 +187,7 @@ const MiniDrawer = (props) => {
         <List>
           <nav id="logout">
             {["logout"].map((text, index) => (
-              <NavLink to="/" key={text}>
+              <NavLink to="/sign-in" key={text}>
                 <ListItem disablePadding sx={{ display: "block" }}>
                   <ListItemButton
                     sx={{

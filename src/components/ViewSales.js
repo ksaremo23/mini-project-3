@@ -25,7 +25,9 @@ const ViewSales = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${api_url}`);
+      const response = await fetch(`${api_url}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       if (!response.ok) {
         throw new Error("Something went wrong in server.");
       }
@@ -58,6 +60,7 @@ const ViewSales = () => {
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(sales),
         });
@@ -92,6 +95,7 @@ const ViewSales = () => {
       await fetch(`${api_url}/${id}`, {
         method: "DELETE",
         mode: "cors",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setSales(sales.filter((row) => row.id !== id));
     } catch (error) {

@@ -27,7 +27,7 @@ const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
-    res.status(401).send("Need a token");
+    res.status(401).send("You need a token to verify your identity");
   } else {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err) {
@@ -41,28 +41,28 @@ const verifyToken = (req, res, next) => {
 };
 
 //customer
-router.get("/customers", dbCustomers.getAll);
-router.get("/customers/:id", dbCustomers.getById);
-router.post("/customers", dbCustomers.create);
-router.put("/customers/:id", dbCustomers.update);
-router.delete("/customers/:id", dbCustomers.remove);
+router.get("/customers", verifyToken, dbCustomers.getAll);
+router.get("/customers/:id", verifyToken, dbCustomers.getById);
+router.post("/customers", verifyToken, dbCustomers.create);
+router.put("/customers/:id", verifyToken, dbCustomers.update);
+router.delete("/customers/:id", verifyToken, dbCustomers.remove);
 
 //products
-router.get("/products", dbProducts.getAll);
-router.get("/products/:id", dbProducts.getById);
-router.post("/products", dbProducts.create);
-router.put("/products/:id", dbProducts.update);
-router.delete("/products/:id", dbProducts.remove);
+router.get("/products", verifyToken, dbProducts.getAll);
+router.get("/products/:id", verifyToken, dbProducts.getById);
+router.post("/products", verifyToken, dbProducts.create);
+router.put("/products/:id", verifyToken, dbProducts.update);
+router.delete("/products/:id", verifyToken, dbProducts.remove);
 
 //sales
-router.get("/sales", dbSales.getAll);
-router.get("/sales/:id", dbSales.getById);
-router.post("/sales", dbSales.create);
-router.put("/sales/:id", dbSales.update);
-router.delete("/sales/:id", dbSales.remove);
+router.get("/sales", verifyToken, dbSales.getAll);
+router.get("/sales/:id", verifyToken, dbSales.getById);
+router.post("/sales", verifyToken, dbSales.create);
+router.put("/sales/:id", verifyToken, dbSales.update);
+router.delete("/sales/:id", verifyToken, dbSales.remove);
 
 //users
-router.get("/users", dbUsers.getAll);
+router.get("/users", verifyToken, dbUsers.getAll);
 router.post("/users/register", dbUsers.create);
 router.post("/users/login", dbUsers.login);
 
