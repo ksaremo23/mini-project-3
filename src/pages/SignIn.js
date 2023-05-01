@@ -84,14 +84,14 @@ const SignIn = (props) => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/Sign-up" variant="body2">
+                <Link href="/sign-up" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5, mb: 4 }} link="http://localhost:3000" />
+        <Copyright sx={{ mt: 5, mb: 4 }} link="/" />
         {props.alert}
       </Container>
     </ThemeProvider>
