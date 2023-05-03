@@ -27,9 +27,11 @@ const Customers = () => {
 
   const handleCloseModal = () => setOpenModal(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
+
     const customer = {
       firstname: data.get("firstName"),
       lastname: data.get("lastName"),
@@ -39,24 +41,24 @@ const Customers = () => {
       email: data.get("email"),
       phone: data.get("phone"),
     };
-    fetch(api_url, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(customer),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then(() => {
-        setSnackbar({
-          children: "Customer successfully added",
-          severity: "success",
-        });
-      })
-      .catch((error) =>
-        setSnackbar({ children: error.message, severity: "error" })
-      );
+
+    try {
+      await fetch(api_url, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(customer),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setSnackbar({
+        children: "Customer successfully added",
+        severity: "success",
+      });
+    } catch (error) {
+      setSnackbar({ children: error.message, severity: "error" });
+    }
   };
   return (
     <Container component="main" maxWidth="md">

@@ -19,7 +19,7 @@ const create = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [rows, fields] = await pool.execute(queries.insertUsers, [
+    const [rows, fields] = await pool.query(queries.insertUsers, [
       username,
       firstname,
       lastname,
@@ -28,10 +28,12 @@ const create = async (req, res) => {
     ]);
     res
       .status(200)
-      .send(`Successfully created new user with ID: ${rows.insertId}`);
+      .json({ msg: `Successfully created new user with ID ${rows.insertId}` });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Unable to create new user. Please try again later.");
+    res
+      .status(500)
+      .json({ error: "Unable to create new user. Please try again later." });
   }
 };
 
@@ -63,8 +65,4 @@ const login = async (req, res) => {
   }
 };
 
-const isAuth = (req, res) => {
-  res.send("You are authenticated, Congrats!");
-};
-
-module.exports = { getAll, create, login, isAuth };
+module.exports = { getAll, create, login };

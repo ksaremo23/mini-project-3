@@ -28,7 +28,7 @@ const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const data = new FormData(event.currentTarget);
     const user = {
       username: data.get("username"),
@@ -48,7 +48,7 @@ const SignUp = () => {
         },
       });
       setSnackbar({
-        children: "User successfuly registered",
+        children: "Success fully registered new user",
         severity: "success",
       });
     } catch (error) {
