@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const getAll = async (req, res) => {
   try {
     const [rows, fields] = await pool.query(queries.selectAllUsers);
-    res.status(200).json(rows);
+    return res.status(200).json(rows);
   } catch (error) {
     console.error(error);
     res.status(500).send("Unable to retrieve users. Please try again later.");
@@ -42,6 +42,7 @@ const login = async (req, res) => {
 
   try {
     const [rows, fields] = await pool.query(queries.selectAllUsers);
+
     const user = rows.find((user) => user.username === username);
 
     if (!user) {

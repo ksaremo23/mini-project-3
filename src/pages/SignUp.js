@@ -39,7 +39,7 @@ const SignUp = () => {
     };
 
     try {
-      await fetch(api_url, {
+      const response = await fetch(api_url, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(user),
@@ -47,8 +47,10 @@ const SignUp = () => {
           "Content-Type": "application/json",
         },
       });
+      const { msg } = await response.json();
+      
       setSnackbar({
-        children: "Success fully registered new user",
+        children: msg,
         severity: "success",
       });
     } catch (error) {

@@ -62,7 +62,7 @@ router.put("/sales/:id", verifyToken, dbSales.update);
 router.delete("/sales/:id", verifyToken, dbSales.remove);
 
 //users
-router.get("/users", verifyToken, dbUsers.getAll);
+router.get("/users", dbUsers.getAll);
 router.post("/users/register", dbUsers.create);
 router.post("/users/login", dbUsers.login);
 
