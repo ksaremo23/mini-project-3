@@ -22,7 +22,7 @@ pool
         "CREATE TABLE IF NOT EXISTS sales(sale_id INT PRIMARY KEY AUTO_INCREMENT, customer_name VARCHAR(15), date_of_sale DATETIME)";
 
       let createUsersTable =
-        "CREATE TABLE IF NOT EXISTS users(user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(10) NOT NULL, firstname VARCHAR(20) NOT NULL, lastname VARCHAR(20) NOT NULL, email_add VARCHAR(20) NOT NULL, password CHAR(60) NOT NULL)";
+        "CREATE TABLE IF NOT EXISTS users(user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(10) NOT NULL, firstname VARCHAR(20) NOT NULL, lastname VARCHAR(20) NOT NULL, email_add VARCHAR(50) NOT NULL, password CHAR(60) NOT NULL)";
 
       await Promise.all([
         connection.query(createCustomersTable),

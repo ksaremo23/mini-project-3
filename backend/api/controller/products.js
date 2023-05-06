@@ -31,20 +31,18 @@ const getById = async (req, res) => {
 const create = async (req, res) => {
   const { code, description, unit_price } = req.body;
   try {
-    const [rows, fields] = await pool.execute(queries.insertProducts, [
+    const [rows, fields] = await pool.query(queries.insertProducts, [
       code,
       description,
       unit_price,
     ]);
-    res
-      .status(200)
-      .send(
-        `${rows.affectedRows} product successfully added with id: ${rows.insertId}`
-      );
+    res.status(200).json({
+      msg: `${rows.affectedRows} product successfully added with id: ${rows.insertId}`,
+    });
   } catch (error) {
     res
       .status(500)
-      .send("Unable to add product with ID. Please try again later.");
+      .json({ msg: "Unable to add product with ID. Please try again later." });
   }
 };
 
