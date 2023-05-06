@@ -27,31 +27,33 @@ const Sales = () => {
 
   const handleCloseModal = () => setOpenModal(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
+
     const sales = {
       customer_name: data.get("customer-name"),
       date_of_sale: data.get("dos"),
     };
-    fetch(api_url, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(sales),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then(() => {
-        setSnackbar({
-          children: "Sales data successfully added",
-          severity: "success",
-        });
-      })
-      .catch((error) =>
-        setSnackbar({ children: error.message, severity: "error" })
-      );
+
+    try {
+      await fetch(api_url, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(sales),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setSnackbar({
+        children: "Sales data successfully added",
+        severity: "success",
+      });
+    } catch (error) {
+      setSnackbar({ children: error.message, severity: "error" });
+    }
   };
 
   return (

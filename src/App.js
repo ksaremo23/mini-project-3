@@ -45,7 +45,7 @@ function App() {
         localStorage.setItem("token", msg);
       } else {
         setIsSignedIn(false);
-        setSnackbar({ children: msg, severity: "error" });
+        setSnackbar({ children: msg, severity: "warning" });
       }
     } catch (error) {
       setSnackbar({

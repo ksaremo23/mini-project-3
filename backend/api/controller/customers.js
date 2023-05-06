@@ -29,7 +29,7 @@ const getById = async (req, res) => {
 const create = async (req, res) => {
   const { firstname, lastname, address, city, zip, email, phone } = req.body;
   try {
-    const [rows, fields] = await pool.execute(queries.insertCustomers, [
+    const [rows, fields] = await pool.query(queries.insertCustomers, [
       firstname,
       lastname,
       address,
@@ -38,14 +38,14 @@ const create = async (req, res) => {
       email,
       phone,
     ]);
-    res
-      .status(200)
-      .send(
-        `${rows.affectedRows} customer successfully added with ID: ${rows.insertId}`
-      );
+    res.status(200).json({
+      msg: `${rows.affectedRows} customer successfully added with ID: ${rows.insertId}`,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Unable to create customer. Please try again later.");
+    res
+      .status(500)
+      .json({ msg: "Unable to create customer. Please try again later." });
   }
 };
 
@@ -53,7 +53,7 @@ const update = async (req, res) => {
   const id = parseInt(req.params.id);
   const { firstname, lastname, address, city, zip, email, phone } = req.body;
   try {
-    const [rows, fields] = await pool.execute(queries.updateCustomers, [
+    const [rows, fields] = await pool.query(queries.updateCustomers, [
       firstname,
       lastname,
       address,
@@ -63,14 +63,14 @@ const update = async (req, res) => {
       phone,
       id,
     ]);
-    res
-      .status(200)
-      .send(
-        `${rows.affectedRows} customer succesfully updated its data with ID: ${id}`
-      );
+    res.status(200).json({
+      msg: `${rows.affectedRows} customer succesfully updated its data with ID: ${id}`,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Unable to update customer. Please try again later.");
+    res
+      .status(500)
+      .json({ msg: "Unable to update customer. Please try again later." });
   }
 };
 

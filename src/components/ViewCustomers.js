@@ -138,8 +138,9 @@ const ViewCustomers = () => {
       setCustomers(
         customers.map((row) => (row.id === newRow.id ? updatedRow : row))
       );
+
       setSnackbar({
-        children: "Customer successfully saved",
+        children: `Customer succesfuly updated with ID: ${updatedRow.id}`,
         severity: "success",
       });
       return updatedRow;
