@@ -22,7 +22,7 @@ router.use(
   })
 );
 
-//authentication middleware 
+//authentication middleware
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -62,7 +62,7 @@ router.put("/sales/:id", verifyToken, dbSales.update);
 router.delete("/sales/:id", verifyToken, dbSales.remove);
 
 //users
-router.get("/users", dbUsers.getAll);
+router.get("/users", verifyToken, dbUsers.getAll);
 router.post("/users/register", dbUsers.create);
 router.post("/users/login", dbUsers.login);
 
